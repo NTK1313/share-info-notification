@@ -48,7 +48,7 @@ for d in range(0,int(list_size)):
 	elif(d == 2):
 		name = '[7466]SPK'
 	elif(d == 3):
-		name = '[8306]MUFG Bank, Ltd.'
+		name = '[8306]MUFG Bank'
 	else:
 		name = '[9432]NTT'
 	message = message + EOL + name
