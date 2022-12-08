@@ -3,8 +3,8 @@ name: Share Information
 on:
   push:
   schedule:
-    # 定期実行する時間・・・①
-    - cron: '10 8 * * 1-5'
+    # 定期実行する時間（平日のみ午前9時ごろ）・・・①
+    - cron: '0 0 * * 1-5'
 
 jobs:
   build:
@@ -26,8 +26,8 @@ jobs:
           pip install colorama
           pip install numpy
           pip install pandas
-          pip --no-cache-dir install matplotlib
-          pip --no-cache-dir install matplotlib-inline
+          pip install matplotlib
+          pip install matplotlib-inline
           pip install yahoo-finance-api2
           pip install requests
           pip install fonttools
