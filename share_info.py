@@ -42,7 +42,7 @@ for d in range(0,int(list_size)):
 	time_list = symbol_data["timestamp"]
 	# Gitで実行時に文字化けするため英語表記に変更
 	if (d == 0):
-		name = '[4220]Riken technos'
+		name = '【4220】リケン technos'
 	elif(d == 1):
 		name = '[4503]Astellas Pharma Inc.'
 	elif(d == 2):
