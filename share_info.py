@@ -84,6 +84,7 @@ message = message + EOL + EOL + 'SBI証券ログインページ' + EOL + 'https:
 #適当にグラフを作る
 fig = plt.figure(figsize=(6,4),dpi=150)
 plt.rcParams['font.family'] = 'Meiryo'
+print(plt.rcParams['font.family'])
 ax1 = fig.add_subplot(111)
 ax1.axis("off")
 columns =['[Code]Name','Stock Price(today)','Stock Price(yest)']
