@@ -24,6 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           # 必要なパッケージインストール・・・②
           pip install colorama
+          pip install fonttools
           pip install numpy
           pip install pandas
           pip install matplotlib
