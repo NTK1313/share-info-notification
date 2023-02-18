@@ -41,8 +41,9 @@ for d in range(0,int(list_size)):
 	price_list = symbol_data["close"]
 	time_list = symbol_data["timestamp"]
 	# Gitで実行時に文字化けするため英語表記に変更
+	# Git上だとmatplotlibでMeiryoがインストールされていないため使えない。（※meiryo使う方法は色々調べたけどわからん。）
 	if (d == 0):
-		name = '【4220】リケン technos'
+		name = '[4220]Riken technos'
 	elif(d == 1):
 		name = '[4503]Astellas Pharma Inc.'
 	elif(d == 2):
@@ -80,10 +81,9 @@ for d in range(0,int(list_size)):
 
 message = message + EOL + EOL + 'SBI証券ログインページ' + EOL + 'https://www.sbisec.co.jp/ETGate/WPLETmgR001Control?OutSide=on&getFlg=on&burl=search_fx&cat1=fx&cat2=guide&dir=guide&file=fx_guide_02_01.html'
 
-# TODO:表作成してLINE通知させる
 #適当にグラフを作る
 fig = plt.figure(figsize=(6,4),dpi=150)
-#plt.rcParams['font.family'] = 'Meiryo'
+plt.rcParams['font.family'] = 'Meiryo'
 print(plt.rcParams['font.family'])
 ax1 = fig.add_subplot(111)
 ax1.axis("off")
