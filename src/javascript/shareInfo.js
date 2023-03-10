@@ -1,26 +1,34 @@
 callApi();
 async function callApi() {
-	const res = await fetch("http://127.0.0.1:3000/api/v1/article1/test");
-	//const res = await fetch("http://127.0.0.1:3000/api/v2/");
-	const result =  await res.json();
+	const res = await fetch("http://127.0.0.1:3000/api/v1/article1/getDBData");
+	const result = await res.json();
 	// DBから返却された結果を画面表示する。
 	const str = JSON.stringify(result);
-	//alert(str);
+	const res2 = await fetch("http://127.0.0.1:3000/api/v1/article1/getPrice", {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: str
+	});
+	const result2 = await res2.json();
+	console.log('POST');
+	console.log(result2);
 
-		/** JSONイメージ
-		[
-			{
-				"br_cd": 3092,
-				"br_name": "ZOZO",
-				"market_segment": "プライム"
-			},
-			{
-				"br_cd": 4220,
-				"br_name": "リケンテクノス",
-				"market_segment": "プライム"
-			}
-		]
-	*/
+	/** JSONイメージ
+	[
+		{
+			"br_cd": 3092,
+			"br_name": "ZOZO",
+			"market_segment": "プライム"
+		},
+		{
+			"br_cd": 4220,
+			"br_name": "リケンテクノス",
+			"market_segment": "プライム"
+		}
+	]
+*/
 	//  表作成
 	var table = document.getElementById("table");
 	// JSONのparse
@@ -44,6 +52,6 @@ async function callApi() {
 		}
 		data += "</tr>";
 	}
-	console.log(data);
+	// console.log(data);
 	table.innerHTML = data;
 };
