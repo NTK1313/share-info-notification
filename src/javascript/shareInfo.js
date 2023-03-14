@@ -1,6 +1,6 @@
 callApi();
 async function callApi() {
-	const res = await fetch("http://127.0.0.1:3000/api/v1/article1/getDBData");
+	const res = await fetch("http://127.0.0.1:3000/api/v1/crudDB/getDBData");
 	/** JSONイメージ
 		[
 			{
@@ -16,7 +16,7 @@ async function callApi() {
 	// DBから返却された結果を画面表示する。
 	const str = JSON.stringify(result);
 	// 最新の株価取得用のボタンは分けるか。
-	const res2 = await fetch("http://127.0.0.1:3000/api/v1/article1/getPrice", {
+	const res2 = await fetch("http://127.0.0.1:3000/api/v1/execAPI/shareInfo", {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
