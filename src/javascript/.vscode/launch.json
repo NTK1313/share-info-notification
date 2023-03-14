@@ -10,7 +10,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "プログラムの起動",
-			"runtimeExecutable": "C:\\Users\\nnsks\\github_local\\line_notification\\Node.js\\node.exe",
+			"runtimeExecutable": "C:\\Users\\nnsks\\github_local\\share_info_notification\\Node.js\\node.exe",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
