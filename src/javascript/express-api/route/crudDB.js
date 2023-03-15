@@ -18,18 +18,68 @@ router.get('/getDBData', function (req, res) {
 		port: 5432,
 	});
 	client.connect();
-	var f = require("./execSql.js");
-	const sqlStr = f.sqlReader("SEL001_M_STOCK_JP.sql");
+	const f = require("./execSql.js");
+	const sel001 = f.sqlReader("SEL001_M_STOCK_JP.sql");
 
 	// // クエリ実行は非同期処理なので、後続処理はコールバック関数として書く
-	client.query(sqlStr, (err, res2) => {
+	client.query(sel001, (err, res2) => {
 		// クエリ実行後の処理
-		var obj = JSON.parse(JSON.stringify(res2.rows));
-		client.end();
-		console.log(obj);
-		res.json(obj);
+		if (err) {
+			console.log('処理ERR');
+			console.log(err);
+			throw err;
+		} else {
+			console.log('処理成功');
+			const obj = JSON.parse(JSON.stringify(res2.rows));
+			client.end();
+			res.json(obj);
+		}
 	});
 });
+
+/**
+ * DBチェック
+ * http://localhost:3000/api/v1/crudDB/checkDBData
+ */
+router.post('/checkDBData', function (req1, res1) {
+	// SQL実行
+	const client = new Client({
+		user: "postgres",
+		host: "127.0.0.1",
+		database: "sharedb",
+		password: "skskr20081106",
+		port: 5432,
+	});
+	client.connect();
+	const reqstr = JSON.parse(JSON.stringify(req1.body));
+	const f = require("./execSql.js");
+	const sel002 = f.sqlReader("SEL002_T_STOCK_JP.sql");
+
+	// チェック対象は1レコードだけ
+	let v = [];
+	v.push(reqstr[0]['銘柄コード']);
+	v.push(reqstr[0]['処理時間（株価）']);
+
+	let query = {
+		text: sel002,
+		values: v,
+	}
+	client.query(query, (err, res) => {
+		console.log(query);
+		// クエリ実行後の処理
+		if (err) {
+			console.log('処理ERR');
+			console.log(err);
+			throw err;
+		} else {
+			console.log('処理完了');
+			const obj = JSON.parse(JSON.stringify(res.rows));
+			client.end();
+			res1.json(obj);
+		}
+	});
+});
+
 
 /**
  * DB登録
@@ -46,21 +96,20 @@ router.post('/insertDBData', function (req1, res1) {
 	});
 	client.connect();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	// TODO:INSERT時のチェック処理をかます
-	
-	var f = require("./execSql.js");
-	const sqlStr = f.sqlReader("INS001_T_STOCK_JP.sql");
+
+	const f = require("./execSql.js");
+	const ins001 = f.sqlReader("INS001_T_STOCK_JP.sql");
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
 		console.log(reqstr[i]);
-		var v = [];
-		var keyList = Object.keys(reqstr[i]);
+		let v = [];
+		let keyList = Object.keys(reqstr[i]);
 		for (let key in keyList) {
 			v.push(reqstr[i][keyList[key]]);
 		}
-		const query = {
-			text: sqlStr,
+		let query = {
+			text: ins001,
 			values: v,
 		}
 

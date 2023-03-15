@@ -7,14 +7,14 @@ var router = express.Router();
  * http://localhost:3000/api/v1/execAPI/shareInfo
  */
 router.post('/shareInfo', async (req, res) => {
-	var reqstr = JSON.parse(JSON.stringify(req.body));
+	const reqstr = JSON.parse(JSON.stringify(req.body));
 	// 銘柄コードのみのリスト作成
-	var codes = reqstr.map(function (value) {
+	let codes = reqstr.map(function (value) {
 		console.log(value["銘柄コード"]);
 		return value["銘柄コード"];
 	})
 	// リクエストから必要な情報を抜き出し配列で保持
-	var results = await call(codes);
+	const results = await call(codes);
 	// レスポンスの作成
 	res.json(JSON.parse(JSON.stringify(results)));
 });
@@ -26,9 +26,9 @@ router.post('/shareInfo', async (req, res) => {
  */
 async function call(codes) {
 	// 配列分ループする（forEachはawait/asyncをサポートしていないので利用できない）
-	var results = [];
+	let results = [];
 	for (let i = 0; i < codes.length; i++) {
-		const result = await yahooFinance.quote(codes[i] + '.T');
+		let result = await yahooFinance.quote(codes[i] + '.T');
 		// regularMarketPrice:株価
 		// regularMarketChange:前日からの変動値
 		let wk = {};
@@ -49,14 +49,14 @@ async function call(codes) {
  * @returns フォーマット変換後の日付
  */
 function convertTime(dt){
-	var y = dt.getFullYear();
-	var m = ("00" + (dt.getMonth()+1)).slice(-2);
-	var d = ("00" + dt.getDate()).slice(-2);
-	var hh =("00" + dt.getHours()).slice(-2);
-	var mm =("00" + dt.getMinutes()).slice(-2);
-	var ss =("00" + dt.getSeconds()).slice(-2);
-	var msec=("000000"+dt.getMilliseconds()).slice(-6);
-	var result = y + "-" + m + "-" + d + " " + hh + ":" + mm + ":" + ss + "."+msec;
+	let y = dt.getFullYear();
+	let m = ("00" + (dt.getMonth()+1)).slice(-2);
+	let d = ("00" + dt.getDate()).slice(-2);
+	let hh =("00" + dt.getHours()).slice(-2);
+	let mm =("00" + dt.getMinutes()).slice(-2);
+	let ss =("00" + dt.getSeconds()).slice(-2);
+	let msec=("000000"+dt.getMilliseconds()).slice(-6);
+	let result = y + "-" + m + "-" + d + " " + hh + ":" + mm + ":" + ss + "."+msec;
 	console.log(result);
 	return result;
 }

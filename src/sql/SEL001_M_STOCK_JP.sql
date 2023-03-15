@@ -27,4 +27,4 @@ where
 	-- 最新のデータ状況だけ取得
 	tgt.num = 1
 order by
-	tgt.br_cd
+	tgt.br_cd;
