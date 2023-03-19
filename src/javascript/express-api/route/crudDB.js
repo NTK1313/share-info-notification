@@ -1,6 +1,6 @@
 const express = require('../../../node-npm/node_modules/express');
-var router = express.Router();
-var { Client } = require('../../../node-npm/node_modules/pg/lib');
+const router = express.Router();
+let { Client } = require('../../../node-npm/node_modules/pg/lib');
 const f = require("./execSql.js");
 
 // TODO:/getPriceの処理のように非同期させればDB接続を共通化出来そう。

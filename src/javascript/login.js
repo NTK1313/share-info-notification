@@ -7,13 +7,11 @@ function nextPage() {
 	// ログイン印象OKの場合
 	if (id && pwd) {
 		const url = "../html/shareInfo.html";
-		//var param = "?value=" + str;
 		location.href = url;
 	} else {
 		alert("ログインID、またはパスワードが正しくありません。");
 		console.log("test");
 		const url = "../html/loginNg.html";
-		//var param = "?value=" + str;
 		location.href = url;
 	}
 }

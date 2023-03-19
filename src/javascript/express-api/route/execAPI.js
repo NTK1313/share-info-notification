@@ -1,6 +1,6 @@
 const yahooFinance = require('../../../node-npm/node_modules/yahoo-finance2').default;
 const express = require('../../../node-npm/node_modules/express');
-var router = express.Router();
+const router = express.Router();
 
 /**
  * YahooFinanceAPI実行
@@ -37,6 +37,7 @@ async function call(codes) {
 		wk['株価'] = result.regularMarketPrice;
 		wk['前日からの変動値'] = result.regularMarketChange;
 		results.push(wk);
+		console.log(result.regularMarketPrice);
 	}
 	return results;
 }
@@ -48,15 +49,14 @@ async function call(codes) {
  * @param dt　フォーマット変換前の日付 
  * @returns フォーマット変換後の日付
  */
-function convertTime(dt){
+function convertTime(dt) {
 	let y = dt.getFullYear();
-	let m = ("00" + (dt.getMonth()+1)).slice(-2);
+	let m = ("00" + (dt.getMonth() + 1)).slice(-2);
 	let d = ("00" + dt.getDate()).slice(-2);
-	let hh =("00" + dt.getHours()).slice(-2);
-	let mm =("00" + dt.getMinutes()).slice(-2);
-	let ss =("00" + dt.getSeconds()).slice(-2);
-	let msec=("000000"+dt.getMilliseconds()).slice(-6);
-	let result = y + "-" + m + "-" + d + " " + hh + ":" + mm + ":" + ss + "."+msec;
+	let hh = ("00" + dt.getHours()).slice(-2);
+	let mm = ("00" + dt.getMinutes()).slice(-2);
+	let ss = ("00" + dt.getSeconds()).slice(-2);
+	let result = y + "-" + m + "-" + d + " " + hh + ":" + mm + ":" + ss;
 	console.log(result);
 	return result;
 }

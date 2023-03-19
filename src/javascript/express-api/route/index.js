@@ -1,6 +1,6 @@
 // ライブラリ読み込み
 const express = require('../../../node-npm/node_modules/express');
-var router = express.Router();
+const router = express.Router();
 
 // ルーティング設定
 router.use('/crudDB', require('./crudDB.js'));

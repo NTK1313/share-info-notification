@@ -1,14 +1,13 @@
+const { create } = require("domain");
 const GET_DB_DATA = "http://127.0.0.1:3000/api/v1/crudDB/getDBData";
 const CHK_DB_DATA = "http://localhost:3000/api/v1/crudDB/checkDBData";
 const INS_DB_DATA = "http://localhost:3000/api/v1/crudDB/insertDBData";
 const GET_SHARE_INFO = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo";
 
 // 株価取得
-callApi1();
-// 株価最新化
-callApi2();
+register();
 
-async function callApi1() {
+async function register() {
 	const res = await fetch(GET_DB_DATA);
 	/** JSONイメージ
 		[
@@ -41,7 +40,24 @@ async function callApi2() {
 	*/
 	const result = await res.json();
 
-	// YahooFinanceAPIを実行する。
+	// DB登録前のチェック
+	const res1 = await fetch(CHK_DB_DATA, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(result)
+	});
+	const result1 = await res1.json();
+
+	// 既に最新データが登録されている場合は後続処理スキップ
+	if (result1.length > 0) {
+		alert('最新情報がDB登録されているため登録処理をスキップします。');
+		createTable(result);
+		return;
+	}
+
+	// DBから返却された結果を画面表示する。
 	const res2 = await fetch(GET_SHARE_INFO, {
 		method: 'POST',
 		headers: {
@@ -71,25 +87,6 @@ async function callApi2() {
 			}
 		}
 	}
-
-	// DB登録前のチェック
-	const res1 = await fetch(CHK_DB_DATA, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(result)
-	});
-	const result1 = await res1.json();
-
-	// 既に最新データが登録されている場合は後続処理スキップ
-	if (result1[0]['count'] > 0) {
-		alert('最新情報がDB登録されているため登録処理をスキップします。');
-		createTable(result);
-		return;
-	}
-
-	// 結果を画面表示する。
 	createTable(result);
 
 	// DB登録（非同期）
@@ -100,31 +97,4 @@ async function callApi2() {
 		},
 		body: JSON.stringify(result2)
 	});
-}
-
-// 画面に表示する表作成
-function createTable(result) {
-	//  表作成
-	let table = document.getElementById("table");
-	let data = '';
-	for (let i = 0; i < result.length; i++) {
-		const share = result[i];
-		const keyList = Object.keys(share);
-
-		// ヘッダ作成
-		if (i == 0) {
-			for (let key in keyList) {
-				data += "<th>" + keyList[key] + "</th>";
-			}
-		}
-
-		// ボディ作成
-		data += "<tr>";
-		for (let key in keyList) {
-			data += "<td>" + share[keyList[key]] + "</td>";
-		}
-		data += "</tr>";
-	}
-	// console.log(data);
-	table.innerHTML = data;
 }

@@ -16,7 +16,7 @@ exports.execSql = async function () {
 			// obj = JSON.parse(JSON.stringify(res.rows));
 			// console.log(obj);
 			client.query(query1, (err, res) => {
-				var obj = JSON.parse(JSON.stringify(res.rows));
+				let obj = JSON.parse(JSON.stringify(res.rows));
 				client.end();
 				console.log(res.rows);
 				console.log(obj);
