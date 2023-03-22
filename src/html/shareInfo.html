@@ -1,18 +1,27 @@
 <html>
-
 <head>
 	<meta charset="UTF-8">
+	<title>銘柄一覧</title>
+	<link rel="stylesheet" href="../css/shareInfo.css">
 </head>
-
-<body>
+<header id="head">
 	<h1>株価一覧</h1>
-	<table border="1" width="800">
-		<tbody id="table">
-		</tbody>
-	</table>
-	<input type="button" onclick="callApi1()" value="株価取得">
-	<input type="button" onclick="callApi2()" value="株価最新化">
-	<script src="../javascript/shareInfo.js"></script>
+</header>
+<body>
+	<div id="container">
+		<br>
+		<br>
+		<br>
+		<br>
+		<table border="1" width="800">
+			<tbody id="tablebody">
+			</tbody>
+		</table>
+		<br>
+		<button id="btn1" class="getShare">株価取得</button>
+		<button id="btn2" class="updateShare">株価最新化</button>
+		<button id="register" onclick="location.href='regisShare.html'">銘柄登録</button>
+		<script src="../javascript/shareInfo.js"></script>
+	</div>
 </body>
-
 </html>
