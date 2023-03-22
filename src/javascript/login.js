@@ -1,7 +1,7 @@
 function nextPage() {
 	// ログイン認証する
-	id = document.login_form.id.value
-	pwd = document.login_form.pass.value;
+	id = document.querySelector('#id').value;
+	pwd = document.querySelector('#password').value;
 	console.log(id);
 	console.log(pwd);
 	// ログイン印象OKの場合

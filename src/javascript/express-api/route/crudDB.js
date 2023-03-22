@@ -72,7 +72,12 @@ router.post('/checkDBData', function (req1, res1) {
 router.post('/insertDBData', function (req1, res1) {
 	const client = connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const ins001 = f.sqlReader("INS001_T_STOCK_JP.sql");
+	let sql = "INS001_T_STOCK_JP.sql";
+	if (reqstr[0]["sqlNm"]) {
+		console.log("SQL指定あり");
+		sql = reqstr[0]["sqlNm"];
+	}
+	ins001 = f.sqlReader(sql);
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
@@ -80,7 +85,9 @@ router.post('/insertDBData', function (req1, res1) {
 		let v = [];
 		let keyList = Object.keys(reqstr[i]);
 		for (let key in keyList) {
-			v.push(reqstr[i][keyList[key]]);
+			if (keyList[key] != "sqlNm") {
+				v.push(reqstr[i][keyList[key]]);
+			}
 		}
 		let query = {
 			text: ins001,
@@ -107,7 +114,7 @@ router.post('/insertDBData', function (req1, res1) {
  * DB接続
  * @returns DB接続情報
  */
-function connectDB(){
+function connectDB() {
 	const client = new Client({
 		user: "postgres",
 		host: "127.0.0.1",

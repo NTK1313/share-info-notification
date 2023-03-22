@@ -1,0 +1,32 @@
+@use "common" as cmn;
+
+#head {
+	text-align: center;
+	color: cmn.$cWhite;
+	background-color: cmn.$cGreen;
+	width: 100%;
+	height: 70px;
+	position: fixed;
+}
+
+#container {
+
+	& .content {
+		color: cmn.$cBlack;
+		font-size: 1.5em;
+		font-weight: bold;
+	}
+
+	& .forms {
+		text-align: center;
+	}
+
+	& input[type=button] {
+		cursor: pointer;
+		@include cmn.button_color();
+	}
+
+	#login_form {
+		text-align: center;
+	}
+}

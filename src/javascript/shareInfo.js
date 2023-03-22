@@ -3,11 +3,6 @@ const CHK_DB_DATA = "http://localhost:3000/api/v1/crudDB/checkDBData";
 const INS_DB_DATA = "http://localhost:3000/api/v1/crudDB/insertDBData";
 const GET_SHARE_INFO = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo";
 
-// 株価取得
-callApi1();
-// 株価最新化
-callApi2();
-
 async function callApi1() {
 	const res = await fetch(GET_DB_DATA);
 	/** JSONイメージ
@@ -105,7 +100,7 @@ async function callApi2() {
 // 画面に表示する表作成
 function createTable(result) {
 	//  表作成
-	let table = document.getElementById("table");
+	let table = document.querySelector('#tablebody');
 	let data = '';
 	for (let i = 0; i < result.length; i++) {
 		const share = result[i];
@@ -128,3 +123,8 @@ function createTable(result) {
 	// console.log(data);
 	table.innerHTML = data;
 }
+
+// 株価取得
+btn1.addEventListener('click', callApi1);
+// 株価最新化
+btn2.addEventListener('click', callApi2);
