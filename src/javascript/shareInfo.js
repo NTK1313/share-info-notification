@@ -4,7 +4,11 @@ const INS_DB_DATA = "http://localhost:3000/api/v1/crudDB/insertDBData";
 const GET_SHARE_INFO = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo";
 
 async function callApi1() {
-	const res = await fetch(GET_DB_DATA);
+	const res = await fetch(GET_DB_DATA).catch(error => {
+		console.error('通信に失敗しました', error);
+		alert('通信に失敗しました');
+		return;
+	});
 	/** JSONイメージ
 		[
 			{
@@ -21,7 +25,11 @@ async function callApi1() {
 };
 
 async function callApi2() {
-	const res = await fetch(GET_DB_DATA);
+	const res = await fetch(GET_DB_DATA).catch(error => {
+		console.error('通信に失敗しました', error);
+		alert('通信に失敗しました');
+		return;
+	});
 	/** JSONイメージ
 		[
 			{
@@ -43,6 +51,10 @@ async function callApi2() {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(result)
+	}).catch(error => {
+		console.error('通信に失敗しました', error);
+		alert('通信に失敗しました');
+		return;
 	});
 	/** JSONイメージ
 		[
@@ -74,6 +86,10 @@ async function callApi2() {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(result)
+	}).catch(error => {
+		console.error('通信に失敗しました', error);
+		alert('通信に失敗しました');
+		return;
 	});
 	const result1 = await res1.json();
 

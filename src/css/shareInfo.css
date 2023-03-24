@@ -7,6 +7,15 @@
   position: fixed;
 }
 
+#tablebody th {
+  background-color: rgba(6, 171, 236, 0.842);
+  color: white;
+}
+#tablebody td {
+  background-color: red;
+  color: white;
+}
+
 #btn1 {
   cursor: pointer;
   background-color: #16b;

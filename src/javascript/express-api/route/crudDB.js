@@ -11,7 +11,7 @@ const f = require("./execSql.js");
  */
 router.get('/getDBData', function (req, res) {
 	// SQL実行
-	const client = connectDB();
+	const client = new connectDB();
 	const sel001 = f.sqlReader("SEL001_M_STOCK_JP.sql");
 
 	// // クエリ実行は非同期処理なので、後続処理はコールバック関数として書く
@@ -35,17 +35,21 @@ router.get('/getDBData', function (req, res) {
  * http://localhost:3000/api/v1/crudDB/checkDBData
  */
 router.post('/checkDBData', function (req1, res1) {
-	const client = connectDB();
+	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const sel002 = f.sqlReader("SEL002_T_STOCK_JP.sql");
-
+	const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "SEL002_T_STOCK_JP.sql";
+	let sql = f.sqlReader(sqlstr);
 	// チェック対象は1レコードだけ
 	let v = [];
-	v.push(reqstr[0]['銘柄コード']);
-	v.push(reqstr[0]['処理時間（株価）']);
+	if (sqlstr == "SEL002_T_STOCK_JP.sql") {
+		v.push(reqstr[0]['銘柄コード']);
+		v.push(reqstr[0]['処理時間（株価）']);
+	} else {
+		v.push(reqstr[0]['brCd']);
+	}
 
 	let query = {
-		text: sel002,
+		text: sql,
 		values: v,
 	}
 	client.query(query, (err, res) => {
@@ -70,14 +74,10 @@ router.post('/checkDBData', function (req1, res1) {
  * http://localhost:3000/api/v1/crudDB/insertDBData
  */
 router.post('/insertDBData', function (req1, res1) {
-	const client = connectDB();
+	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	let sql = "INS001_T_STOCK_JP.sql";
-	if (reqstr[0]["sqlNm"]) {
-		console.log("SQL指定あり");
-		sql = reqstr[0]["sqlNm"];
-	}
-	ins001 = f.sqlReader(sql);
+	const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "INS001_T_STOCK_JP.sql";
+	const sql = f.sqlReader(sqlstr);
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
@@ -90,7 +90,7 @@ router.post('/insertDBData', function (req1, res1) {
 			}
 		}
 		let query = {
-			text: ins001,
+			text: sql,
 			values: v,
 		}
 
@@ -112,18 +112,20 @@ router.post('/insertDBData', function (req1, res1) {
 
 /**
  * DB接続
- * @returns DB接続情報
+ * @return client
  */
-function connectDB() {
-	const client = new Client({
-		user: "postgres",
-		host: "127.0.0.1",
-		database: "sharedb",
-		password: "skskr20081106",
-		port: 5432,
-	});
-	client.connect();
-	return client;
+class connectDB {
+	constructor() {
+		const client = new Client({
+			user: "postgres",
+			host: "127.0.0.1",
+			database: "sharedb",
+			password: "skskr20081106",
+			port: 5432,
+		});
+		client.connect();
+		return client;
+	}
 }
 
 //routerをモジュールとして扱う準備

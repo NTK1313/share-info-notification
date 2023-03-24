@@ -9,6 +9,17 @@
 	position: fixed;
 }
 
+#tablebody {
+	th {
+		background-color: rgba(6, 171, 236, 0.842);
+		color: cmn.$cWhite;
+	}
+	td {
+		background-color: red;
+		color: cmn.$cWhite;
+	}
+}
+
 #btn1 {
 	cursor: pointer;
 	@include cmn.button_color();
