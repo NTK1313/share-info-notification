@@ -115,29 +115,58 @@ async function callApi2() {
 
 // 画面に表示する表作成
 function createTable(result) {
-	//  表作成
-	let table = document.querySelector('#tablebody');
-	let data = '';
-	for (let i = 0; i < result.length; i++) {
-		const share = result[i];
-		const keyList = Object.keys(share);
+	const ta = new DesignTableCreate(result);
+	ta.animate();
+}
 
+/**
+ * データ表作成＆カラーリング
+ */
+class TableCreate {
+    constructor(result) {
+        this.DOM = {};
+		this.DOM.table = document.querySelector('#tablebody');
 		// ヘッダ作成
-		if (i == 0) {
-			for (let key in keyList) {
-				data += "<th>" + keyList[key] + "</th>";
-			}
-		}
-
-		// ボディ作成
-		data += "<tr>";
+		let data = '';
+		this.result = result;
+		const share = result[0];
+		const keyList = Object.keys(share);
 		for (let key in keyList) {
-			data += "<td>" + share[keyList[key]] + "</td>";
+			data += "<th>" + keyList[key] + "</th>";
 		}
-		data += "</tr>";
-	}
-	// console.log(data);
-	table.innerHTML = data;
+		// ボディ作成
+		this.DOM.table.innerHTML = data + this._makeBody();
+		console.log(this.DOM.table.innerHTML);
+    }
+    _makeBody() {
+        return this.result.reduce((acc, curr) => {
+			let valueList = Object.values(curr);
+			// 1カラムずつ編集
+			let edit = valueList.reduce((acc1,curr1) =>{
+				return `${acc1}<td>${curr1}</td>`;
+			},"");
+			// 1レコードずつ編集
+            return `${acc}<tr>${edit}</tr>`;
+        }, "");
+    }
+}
+class DesignTableCreate extends TableCreate {
+    constructor(result) {
+        super(result);
+        this.DOM.tr = document.querySelectorAll('tr');
+    }
+    
+    animate() {
+        this.DOM.tr.forEach((c, i) => {
+			c.style.color = '#082029d7';
+			// 1行ごとに色を変更する
+			if(i==0 || i % 2 == 0){
+				c.style.backgroundColor = '#86d2f0d7';
+			} else {
+				c.style.backgroundColor = '#ebf5f8d7';
+			}
+        });
+    }
 }
 
 // 株価取得

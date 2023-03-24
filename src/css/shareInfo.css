@@ -8,11 +8,7 @@
 }
 
 #tablebody th {
-  background-color: rgba(6, 171, 236, 0.842);
-  color: white;
-}
-#tablebody td {
-  background-color: red;
+  background-color: rgba(21, 6, 236, 0.8431372549);
   color: white;
 }
 
