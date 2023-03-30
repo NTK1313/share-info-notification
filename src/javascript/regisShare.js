@@ -25,8 +25,9 @@ async function regisInfo() {
 	}
 
 	// DB重複チェック
-	let check = [{ "brCd": brCd, "sqlNm": "SEL003_M_STOCK_JP.sql" }];
-	const res1 = await fetch(CHK_DB_DATA, {
+	let check = [{ "brCd": brCd }];
+	const sqlNm1 = "SEL003_M_STOCK_JP";
+	const res1 = await fetch(CHK_DB_DATA + "/" + sqlNm1, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -56,12 +57,13 @@ async function regisInfo() {
 			}
 		]
 	*/
-	let regisInfo = [{ "brCd": brCd, "brNm": brNm, "segment": segment, "sqlNm": "INS002_M_STOCK_JP.sql" }];
+	let regisInfo = [{ "brCd": brCd, "brNm": brNm, "segment": segment }];
 	console.log(JSON.stringify(regisInfo));
 
 	// API呼び出し、DB登録
 	// DB登録（非同期）
-	const res = await fetch(INS_DB_DATA, {
+	const sqlNm2 = "INS002_M_STOCK_JP";
+	const res = await fetch(INS_DB_DATA + "/" + sqlNm2, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'

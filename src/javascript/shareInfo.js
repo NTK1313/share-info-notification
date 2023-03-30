@@ -2,9 +2,14 @@ const GET_DB_DATA = "http://127.0.0.1:3000/api/v1/crudDB/getDBData";
 const CHK_DB_DATA = "http://localhost:3000/api/v1/crudDB/checkDBData";
 const INS_DB_DATA = "http://localhost:3000/api/v1/crudDB/insertDBData";
 const GET_SHARE_INFO = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo";
+const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOCK_JP"];
 
-async function callApi1() {
-	const res = await fetch(GET_DB_DATA).catch(error => {
+/**
+ * トランから株価取得
+ * @param {実行SQL名} sqlNm 
+ */
+async function getShareInfo() {
+	const res = await fetch(GET_DB_DATA + "/" + this.sqlNm).catch(error => {
 		console.error('通信に失敗しました', error);
 		alert('通信に失敗しました');
 		return;
@@ -24,8 +29,13 @@ async function callApi1() {
 	createTable(result);
 };
 
-async function callApi2() {
-	const res = await fetch(GET_DB_DATA).catch(error => {
+/**
+ * APIを実行して最新の株価取得しDB登録
+ * @param {実行SQL名} sqlNm 
+ */
+async function latestShare() {
+	const sql1 = this.sqlNm[0];
+	const res = await fetch(GET_DB_DATA + "/" + sql1).catch(error => {
 		console.error('通信に失敗しました', error);
 		alert('通信に失敗しました');
 		return;
@@ -80,7 +90,8 @@ async function callApi2() {
 	}
 
 	// DB登録前のチェック
-	const res1 = await fetch(CHK_DB_DATA, {
+	const sql2 = this.sqlNm[1];
+	const res1 = await fetch(CHK_DB_DATA + "/" + sql2, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -104,7 +115,8 @@ async function callApi2() {
 	createTable(result);
 
 	// DB登録（非同期）
-	fetch(INS_DB_DATA, {
+	const sql3 = this.sqlNm[2];
+	fetch(INS_DB_DATA + "/" + sql3, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -112,6 +124,8 @@ async function callApi2() {
 		body: JSON.stringify(result2)
 	});
 }
+
+
 
 // 画面に表示する表作成
 function createTable(result) {
@@ -123,53 +137,63 @@ function createTable(result) {
  * データ表作成＆カラーリング
  */
 class TableCreate {
-    constructor(result) {
-        this.DOM = {};
+	constructor(result) {
+		this.DOM = {};
 		this.DOM.table = document.querySelector('#tablebody');
 		// ヘッダ作成
-		let data = '';
 		this.result = result;
 		const share = result[0];
 		const keyList = Object.keys(share);
-		for (let key in keyList) {
-			data += "<th>" + keyList[key] + "</th>";
-		}
+		let data = keyList.reduce((acc, curr) => {
+			return `${acc}<th>${curr}</th>`;
+		}, "");
+		data += '<th>更新</th>';
 		// ボディ作成
 		this.DOM.table.innerHTML = data + this._makeBody();
 		console.log(this.DOM.table.innerHTML);
-    }
-    _makeBody() {
-        return this.result.reduce((acc, curr) => {
+	}
+	_makeBody() {
+		return this.result.reduce((acc, curr) => {
 			let valueList = Object.values(curr);
+			// 銘柄コードをIDとして付与
+			let code = valueList[0];
 			// 1カラムずつ編集
-			let edit = valueList.reduce((acc1,curr1) =>{
+			let edit = valueList.reduce((acc1, curr1) => {
 				return `${acc1}<td>${curr1}</td>`;
-			},"");
+			}, "");
+			// 更新ボタン付与
+			// edit += `<td><button id="cd${code}">更新</button></td>`;
+			edit += `<td><button id="btntest">更新</button></td>`;
 			// 1レコードずつ編集
-            return `${acc}<tr>${edit}</tr>`;
-        }, "");
-    }
+			return `${acc}<tr>${edit}</tr>`;
+		}, "");
+	}
 }
+
 class DesignTableCreate extends TableCreate {
-    constructor(result) {
-        super(result);
-        this.DOM.tr = document.querySelectorAll('tr');
-    }
-    
-    animate() {
-        this.DOM.tr.forEach((c, i) => {
+	constructor(result) {
+		super(result);
+		this.DOM.tr = document.querySelectorAll('tr');
+	}
+
+	animate() {
+		this.DOM.tr.forEach((c, i) => {
 			c.style.color = '#082029d7';
 			// 1行ごとに色を変更する
-			if(i==0 || i % 2 == 0){
+			if (i == 0 || i % 2 == 0) {
 				c.style.backgroundColor = '#86d2f0d7';
 			} else {
 				c.style.backgroundColor = '#ebf5f8d7';
 			}
-        });
-    }
+		});
+	}
 }
 
 // 株価取得
-btn1.addEventListener('click', callApi1);
+btn1.addEventListener('click', { sqlNm: "SEL001_M_STOCK_JP", handleEvent: getShareInfo });
 // 株価最新化
-btn2.addEventListener('click', callApi2);
+btn2.addEventListener('click', { sqlNm: latestSharePrm, handleEvent: latestShare });
+
+// btntest.onclick = () => {
+// 	alert('Hello test');
+// }

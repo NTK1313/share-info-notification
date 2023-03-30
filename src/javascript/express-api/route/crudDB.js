@@ -9,10 +9,11 @@ const f = require("./execSql.js");
  * DB検索
  * http://localhost:3000/api/v1/crudDB/getDBData
  */
-router.get('/getDBData', function (req, res) {
+router.get('/getDBData/:sqlNm', function (req, res) {
 	// SQL実行
+	console.log("実行SQL：" + req.params.sqlNm);
 	const client = new connectDB();
-	const sel001 = f.sqlReader("SEL001_M_STOCK_JP.sql");
+	const sel001 = f.sqlReader(req.params.sqlNm + ".sql");
 
 	// // クエリ実行は非同期処理なので、後続処理はコールバック関数として書く
 	client.query(sel001, (err, res2) => {
@@ -34,10 +35,13 @@ router.get('/getDBData', function (req, res) {
  * DBチェック
  * http://localhost:3000/api/v1/crudDB/checkDBData
  */
-router.post('/checkDBData', function (req1, res1) {
+router.post('/checkDBData/:sqlNm', function (req1, res1) {
 	const client = new connectDB();
+	// URL
+	console.log(req1.params.sqlNm);
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "SEL002_T_STOCK_JP.sql";
+	// const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "SEL002_T_STOCK_JP.sql";
+	const sqlstr = req1.params.sqlNm + ".sql"
 	let sql = f.sqlReader(sqlstr);
 	// チェック対象は1レコードだけ
 	let v = [];
@@ -73,11 +77,12 @@ router.post('/checkDBData', function (req1, res1) {
  * DB登録
  * http://localhost:3000/api/v1/crudDB/insertDBData
  */
-router.post('/insertDBData', function (req1, res1) {
+router.post('/insertDBData/:sqlNm', function (req1, res1) {
 	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "INS001_T_STOCK_JP.sql";
-	const sql = f.sqlReader(sqlstr);
+	console.log("実行SQL：" + req1.params.sqlNm);
+	// const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "INS001_T_STOCK_JP.sql";
+	const sql = f.sqlReader(req1.params.sqlNm + ".sql");
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
