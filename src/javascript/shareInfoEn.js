@@ -1,8 +1,8 @@
 const GET_DB_DATA = "http://127.0.0.1:3000/api/v1/crudDB/getDBData";
 const CHK_DB_DATA = "http://localhost:3000/api/v1/crudDB/checkDBData";
 const INS_DB_DATA = "http://localhost:3000/api/v1/crudDB/insertDBData";
-const GET_SHARE_INFO_JP = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo/JP";
-const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOCK_JP"];
+const GET_SHARE_INFO_EN = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo/EN";
+const latestSharePrm = ["SEL004_M_STOCK_EN", "SEL005_T_STOCK_EN", "INS003_T_STOCK_EN"];
 
 /**
  * トランから株価取得
@@ -47,7 +47,7 @@ async function latestShare() {
 				"企業名": "NTT",
 				"市場区分": "プライム",
 				"処理日時（株価）"2023-03-15 10:00:21":
-				"株価（円）": 3964,
+				"株価": 3964,
 				"前日からの変動値": -22
 			}
 		]
@@ -55,7 +55,7 @@ async function latestShare() {
 	const result = await res.json();
 
 	// YahooFinanceAPIを実行する。
-	const res2 = await fetch(GET_SHARE_INFO_JP, {
+	const res2 = await fetch(GET_SHARE_INFO_EN, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -83,7 +83,7 @@ async function latestShare() {
 		for (let j = 0; j < result2.length; j++) {
 			if (code == result2[j]['銘柄コード']) {
 				result[i]['処理時間（株価）'] = result2[j]['処理時間（株価）'];
-				result[i]['株価（円）'] = result2[j]['株価（円）'];
+				result[i]['株価（ドル）'] = result2[j]['株価（ドル）'];
 				result[i]['前日からの変動値'] = result2[j]['前日からの変動値'];
 			}
 		}
@@ -150,7 +150,6 @@ class TableCreate {
 		data += '<th>更新</th>';
 		// ボディ作成
 		this.DOM.table.innerHTML = data + this._makeBody();
-		console.log(this.DOM.table.innerHTML);
 	}
 	_makeBody() {
 		return this.result.reduce((acc, curr) => {
@@ -190,9 +189,9 @@ class DesignTableCreate extends TableCreate {
 }
 
 // 株価取得
-btn1.addEventListener('click', { sqlNm: "SEL001_M_STOCK_JP", handleEvent: getShareInfo });
+btnEn1.addEventListener('click', { sqlNm: "SEL004_M_STOCK_EN", handleEvent: getShareInfo });
 // 株価最新化
-btn2.addEventListener('click', { sqlNm: latestSharePrm, handleEvent: latestShare });
+btnEn2.addEventListener('click', { sqlNm: latestSharePrm, handleEvent: latestShare });
 
 // btntest.onclick = () => {
 // 	alert('Hello test');

@@ -6,38 +6,48 @@ const router = express.Router();
  * YahooFinanceAPI実行
  * http://localhost:3000/api/v1/execAPI/shareInfo
  */
-router.post('/shareInfo', async (req, res) => {
+router.post('/shareInfo/:kbn', async (req, res) => {
 	const reqstr = JSON.parse(JSON.stringify(req.body));
+	const jpEn = req.params.kbn;
+	console.log("JP/EN区分：" + jpEn);
 	// 銘柄コードのみのリスト作成
 	let codes = reqstr.map(function (value) {
-		console.log(value["銘柄コード"]);
 		return value["銘柄コード"];
 	})
 	// リクエストから必要な情報を抜き出し配列で保持
-	const results = await call(codes);
+	const results = await call(codes, jpEn);
 	// レスポンスの作成
 	res.json(JSON.parse(JSON.stringify(results)));
 });
 
 /**
  * YAHOOファイナンスAPIを実行して株価取得する。
- * @param codes 銘柄コード 
+ * @param codes 銘柄コード
+ * @param jpEn 日本/米国区分
  * @returns API取得結果
  */
-async function call(codes) {
+async function call(codes, jpEn) {
 	// 配列分ループする（forEachはawait/asyncをサポートしていないので利用できない）
 	let results = [];
 	for (let i = 0; i < codes.length; i++) {
-		let result = await yahooFinance.quote(codes[i] + '.T');
+		let code = codes[i];
+		if (jpEn == "JP") {
+			code = code + ".T";
+		}
+		// CMDコマンド:npx yahoo-finance2 quote 3092.T
+		let result = await yahooFinance.quote(code);
 		// regularMarketPrice:株価
 		// regularMarketChange:前日からの変動値
 		let wk = {};
 		wk['銘柄コード'] = codes[i];
 		wk['処理時間（株価）'] = convertTime(result.regularMarketTime);
-		wk['株価'] = result.regularMarketPrice;
+		if (jpEn == "JP") {
+			wk['株価（円）'] = "\\" + result.regularMarketPrice;
+		} else {
+			wk['株価（ドル）'] = "$" + result.regularMarketPrice;
+		}
 		wk['前日からの変動値'] = result.regularMarketChange;
 		results.push(wk);
-		console.log(result.regularMarketPrice);
 	}
 	return results;
 }
@@ -57,7 +67,6 @@ function convertTime(dt) {
 	let mm = ("00" + dt.getMinutes()).slice(-2);
 	let ss = ("00" + dt.getSeconds()).slice(-2);
 	let result = y + "-" + m + "-" + d + " " + hh + ":" + mm + ":" + ss;
-	console.log(result);
 	return result;
 }
 

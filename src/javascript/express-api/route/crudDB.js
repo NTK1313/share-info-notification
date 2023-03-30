@@ -11,7 +11,6 @@ const f = require("./execSql.js");
  */
 router.get('/getDBData/:sqlNm', function (req, res) {
 	// SQL実行
-	console.log("実行SQL：" + req.params.sqlNm);
 	const client = new connectDB();
 	const sel001 = f.sqlReader(req.params.sqlNm + ".sql");
 
@@ -38,14 +37,12 @@ router.get('/getDBData/:sqlNm', function (req, res) {
 router.post('/checkDBData/:sqlNm', function (req1, res1) {
 	const client = new connectDB();
 	// URL
-	console.log(req1.params.sqlNm);
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	// const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "SEL002_T_STOCK_JP.sql";
 	const sqlstr = req1.params.sqlNm + ".sql"
 	let sql = f.sqlReader(sqlstr);
 	// チェック対象は1レコードだけ
 	let v = [];
-	if (sqlstr == "SEL002_T_STOCK_JP.sql") {
+	if (sqlstr == "SEL002_T_STOCK_JP.sql" || sqlstr == "SEL005_T_STOCK_EN.sql") {
 		v.push(reqstr[0]['銘柄コード']);
 		v.push(reqstr[0]['処理時間（株価）']);
 	} else {
@@ -57,7 +54,6 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 		values: v,
 	}
 	client.query(query, (err, res) => {
-		console.log(query);
 		// クエリ実行後の処理
 		if (err) {
 			console.log('処理ERR');
@@ -80,7 +76,6 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 router.post('/insertDBData/:sqlNm', function (req1, res1) {
 	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	console.log("実行SQL：" + req1.params.sqlNm);
 	// const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "INS001_T_STOCK_JP.sql";
 	const sql = f.sqlReader(req1.params.sqlNm + ".sql");
 
@@ -100,7 +95,6 @@ router.post('/insertDBData/:sqlNm', function (req1, res1) {
 		}
 
 		client.query(query, (err, res) => {
-			console.log(query);
 			// クエリ実行後の処理
 			if (err) {
 				console.log('登録ERR');
