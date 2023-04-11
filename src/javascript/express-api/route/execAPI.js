@@ -4,6 +4,7 @@ const router = express.Router();
 
 /**
  * YahooFinanceAPI実行
+ * requestは銘柄コードのみあればOK
  * http://localhost:3000/api/v1/execAPI/shareInfo
  */
 router.post('/shareInfo/:kbn', async (req, res) => {
@@ -46,7 +47,7 @@ async function call(codes, jpEn) {
 		} else {
 			wk['株価（ドル）'] = "$" + result.regularMarketPrice;
 		}
-		wk['前日からの変動値'] = result.regularMarketChange;
+		wk['前日からの変動値'] = Math.round(result.regularMarketChange * 10) / 10;
 		results.push(wk);
 	}
 	return results;

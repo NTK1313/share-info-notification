@@ -1,7 +1,42 @@
 const INS_DB_DATA = 'http://localhost:3000/api/v1/crudDB/insertDBData';
 const CHK_DB_DATA = 'http://localhost:3000/api/v1/crudDB/checkDBData';
 
+/**
+ * 日本株・米国株の市場区分
+ */
+let array = new Array();
+array[''] = new Array({ kbn: "選択してください" });
+array["JP"] = new Array(
+	{ kbn: "プライム" },
+	{ kbn: "スタンダード" },
+	{ kbn: "グロース" }
+);
+array["EN"] = [
+	{ kbn: "NYSE" },
+	{ kbn: "NASDAQ" }
+];
+
+/**
+ * 株式ごとの市場区分選択
+ */
+document.querySelector("select[name='enjp']").onchange = function () {
+	const segment = document.querySelector("#segment");
+	segment.options.length = 0
+	const changedPref = enjp.value;
+	for (let i = 0; i < array[changedPref].length; i++) {
+		let op = document.createElement("option");
+		value = array[changedPref][i]
+		op.value = value.kbn;
+		op.innerText = value.kbn;
+		segment.appendChild(op);
+	}
+}
+
+/**
+ * DBに銘柄登録
+ */
 async function regisInfo() {
+	const enjp = document.querySelector('#enjp').value;
 	const brCd = document.querySelector('#brCd').value;
 	const brNm = document.querySelector('#brNm').value;
 	const segment = document.querySelector('#segment').value;
@@ -19,14 +54,17 @@ async function regisInfo() {
 		return;
 	}
 	// 桁数チェック
-	if (!regexp.test(brCd)) {
+	if (!regexp.test(brCd) && enjp == "JP") {
 		alert('銘柄コードは4桁の数値で入力してください');
 		return;
 	}
 
 	// DB重複チェック
 	let check = [{ "brCd": brCd }];
-	const sqlNm1 = "SEL003_M_STOCK_JP";
+	let sqlNm1 = "SEL003_M_STOCK_JP";
+	if (enjp == "EN") {
+		sqlNm1 = "SEL006_M_STOCK_EN";
+	}
 	const res1 = await fetch(CHK_DB_DATA + "/" + sqlNm1, {
 		method: 'POST',
 		headers: {
@@ -62,7 +100,10 @@ async function regisInfo() {
 
 	// API呼び出し、DB登録
 	// DB登録（非同期）
-	const sqlNm2 = "INS002_M_STOCK_JP";
+	let sqlNm2 = "INS002_M_STOCK_JP";
+	if (enjp == "EN") {
+		sqlNm2 = "INS004_M_STOCK_EN";
+	}
 	const res = await fetch(INS_DB_DATA + "/" + sqlNm2, {
 		method: 'POST',
 		headers: {
@@ -75,6 +116,6 @@ async function regisInfo() {
 		return;
 	});
 }
+
 // 要素を取得
 btn.addEventListener('click', regisInfo);
-

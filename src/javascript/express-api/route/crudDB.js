@@ -101,12 +101,14 @@ router.post('/insertDBData/:sqlNm', function (req1, res1) {
 				console.log(err);
 				throw err;
 			} else {
-				console.log('登録完了');
+				console.log('レコード登録');
 				// 非同期実行が全て終わった時に切断
 				client.on('drain', client.end.bind(client));
 			}
 		});
 	}
+	console.log('登録処理完了');
+	res1.json('[{"MSG": 処理完了}]');
 });
 
 /**
