@@ -81,7 +81,6 @@ router.post('/insertDBData/:sqlNm', function (req1, res1) {
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
-		console.log(reqstr[i]);
 		let v = [];
 		let keyList = Object.keys(reqstr[i]);
 		for (let key in keyList) {

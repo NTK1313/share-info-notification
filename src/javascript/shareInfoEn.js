@@ -1,7 +1,3 @@
-const GET_DB_DATA = "http://127.0.0.1:3000/api/v1/crudDB/getDBData";
-const CHK_DB_DATA = "http://localhost:3000/api/v1/crudDB/checkDBData";
-const INS_DB_DATA = "http://localhost:3000/api/v1/crudDB/insertDBData";
-const GET_SHARE_INFO_EN = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo/EN";
 const latestSharePrm = ["SEL004_M_STOCK_EN", "SEL005_T_STOCK_EN", "INS003_T_STOCK_EN"];
 
 /**
@@ -124,8 +120,6 @@ async function latestShare() {
 		body: JSON.stringify(result2)
 	});
 }
-
-
 
 // 画面に表示する表作成
 function createTable(result) {

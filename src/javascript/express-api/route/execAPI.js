@@ -10,7 +10,6 @@ const router = express.Router();
 router.post('/shareInfo/:kbn', async (req, res) => {
 	const reqstr = JSON.parse(JSON.stringify(req.body));
 	const jpEn = req.params.kbn;
-	console.log("JP/EN区分：" + jpEn);
 	// 銘柄コードのみのリスト作成
 	let codes = reqstr.map(function (value) {
 		return value["銘柄コード"];

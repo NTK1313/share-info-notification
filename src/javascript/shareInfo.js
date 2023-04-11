@@ -1,7 +1,3 @@
-const GET_DB_DATA = "http://127.0.0.1:3000/api/v1/crudDB/getDBData";
-const CHK_DB_DATA = "http://localhost:3000/api/v1/crudDB/checkDBData";
-const INS_DB_DATA = "http://localhost:3000/api/v1/crudDB/insertDBData";
-const GET_SHARE_INFO_JP = "http://127.0.0.1:3000/api/v1/execAPI/shareInfo/JP";
 const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOCK_JP"];
 
 /**
@@ -10,8 +6,8 @@ const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOC
  */
 async function getShareInfo() {
 	const res = await fetch(GET_DB_DATA + "/" + this.sqlNm).catch(error => {
-		console.error('通信に失敗しました', error);
-		alert('通信に失敗しました');
+		console.error(NETWORK_ERR, error);
+		alert(NETWORK_ERR);
 		return;
 	});
 	/** JSONイメージ
@@ -36,8 +32,8 @@ async function getShareInfo() {
 async function latestShare() {
 	const sql1 = this.sqlNm[0];
 	const res = await fetch(GET_DB_DATA + "/" + sql1).catch(error => {
-		console.error('通信に失敗しました', error);
-		alert('通信に失敗しました');
+		console.error(NETWORK_ERR, error);
+		alert(NETWORK_ERR);
 		return;
 	});
 	/** JSONイメージ
@@ -55,15 +51,10 @@ async function latestShare() {
 	const result = await res.json();
 
 	// YahooFinanceAPIを実行する。
-	const res2 = await fetch(GET_SHARE_INFO_JP, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(result)
-	}).catch(error => {
-		console.error('通信に失敗しました', error);
-		alert('通信に失敗しました');
+	const detail = setApiDetail([METHOD_POST, APPLICATION_JSON, result]);
+	const res2 = await fetch(GET_SHARE_INFO_JP, detail).catch(error => {
+		console.error(NETWORK_ERR, error);
+		alert(NETWORK_ERR);
 		return;
 	});
 	/** JSONイメージ
@@ -90,16 +81,11 @@ async function latestShare() {
 	}
 
 	// DB登録前のチェック
+	const detail1 = setApiDetail([METHOD_POST, APPLICATION_JSON, result]);
 	const sql2 = this.sqlNm[1];
-	const res1 = await fetch(CHK_DB_DATA + "/" + sql2, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(result)
-	}).catch(error => {
-		console.error('通信に失敗しました', error);
-		alert('通信に失敗しました');
+	const res1 = await fetch(CHK_DB_DATA + "/" + sql2, detail1).catch(error => {
+		console.error(NETWORK_ERR, error);
+		alert(NETWORK_ERR);
 		return;
 	});
 	const result1 = await res1.json();
@@ -115,15 +101,10 @@ async function latestShare() {
 	createTable(result);
 
 	// DB登録
+	const detail2 = setApiDetail([METHOD_POST, APPLICATION_JSON, result2]);
 	const sql3 = this.sqlNm[2];
-	await fetch(INS_DB_DATA + "/" + sql3, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(result2)
-	}).then(() => {
-		alert('一括最新化処理が完了しました。');
+	await fetch(INS_DB_DATA + "/" + sql3, detail2).then(() => {
+		alert(LATEST_COMPLETE);
 	});
 }
 
@@ -136,117 +117,51 @@ async function alt(value) {
 	body.push(id);
 
 	// YahooFinanceAPIを実行する。
-	const res = await fetch(GET_SHARE_INFO_JP, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		// JSONイメージ [{"銘柄コード": 9432}]
-		body: JSON.stringify(body)
-	}).catch(error => {
-		console.error('通信に失敗しました', error);
-		alert('通信に失敗しました');
+	// JSONイメージ [{"銘柄コード": 9432}]
+	const detail = setApiDetail([METHOD_POST, APPLICATION_JSON, body]);
+	const res = await fetch(GET_SHARE_INFO_JP, detail).catch(error => {
+		console.error(NETWORK_ERR, error);
+		alert(NETWORK_ERR);
 		return;
 	});
 	const result = await res.json();
-	console.log(result);
 
 	// DB登録チェック
-	const res1 = await fetch(CHK_DB_DATA + "/" + "SEL002_T_STOCK_JP", {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(result)
-	}).catch(error => {
-		console.error('通信に失敗しました', error);
-		alert('通信に失敗しました');
+	const detail1 = setApiDetail([METHOD_POST, APPLICATION_JSON, result]);
+	const res1 = await fetch(CHK_DB_DATA + "/" + "SEL002_T_STOCK_JP", detail1).catch(error => {
+		console.error(NETWORK_ERR, error);
+		alert(NETWORK_ERR);
 		return;
 	});
 	const result1 = await res1.json();
 
 	// 既に最新データが登録されている場合は後続処理スキップ
 	if (result1[0]['count'] > 0) {
-		alert('最新情報がDB登録されているため登録処理をスキップします。');
+		alert(ALREADY_REGISTER);
 		return;
 	}
 
-	// DB登録（非同期）
-	await fetch(INS_DB_DATA + "/" + "INS001_T_STOCK_JP", {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(result)
-	});
-	alert('DB登録完了しました。');
-}
-
-// 画面に表示する表作成
-function createTable(result) {
-	const ta = new DesignTableCreate(result);
-	ta.animate();
+	// DB登録
+	await fetch(INS_DB_DATA + "/" + "INS001_T_STOCK_JP", detail1);
+	alert(REGISTER_COMPLETE);
 }
 
 /**
- * データ表作成＆カラーリング
+ * API付加情報の設定
+ * @param {*} info 
  */
-class TableCreate {
-	constructor(result) {
-		this.DOM = {};
-		this.DOM.table = document.querySelector('#tablebody');
-		// ヘッダ作成
-		this.result = result;
-		const share = result[0];
-		const keyList = Object.keys(share);
-		let data = keyList.reduce((acc, curr) => {
-			return `${acc}<th>${curr}</th>`;
-		}, "");
-		data += '<th>更新</th>';
-		// ボディ作成
-		this.DOM.table.innerHTML = data + this._makeBody();
-		console.log(this.DOM.table.innerHTML);
-	}
-	_makeBody() {
-		return this.result.reduce((acc, curr) => {
-			let valueList = Object.values(curr);
-			console.log(valueList);
-			// 銘柄コードをIDとして付与
-			let code = valueList[0];
-			// 1カラムずつ編集
-			let edit = valueList.reduce((acc1, curr1) => {
-				return `${acc1}<td>${curr1}</td>`;
-			}, "");
-			// 更新ボタン付与(ボタン押下時にイベント設定)
-			edit += `<td><button id="${code}"  onclick="alt(this)">更新</button></td>`;
-			console.log(edit);
-			// 1レコードずつ編集
-			return `${acc}<tr>${edit}</tr>`;
-		}, "");
-	}
-}
-
-class DesignTableCreate extends TableCreate {
-	constructor(result) {
-		super(result);
-		this.DOM.tr = document.querySelectorAll('tr');
-	}
-
-	animate() {
-		this.DOM.tr.forEach((c, i) => {
-			c.style.color = '#082029d7';
-			// 1行ごとに色を変更する
-			if (i == 0 || i % 2 == 0) {
-				c.style.backgroundColor = '#86d2f0d7';
-			} else {
-				c.style.backgroundColor = '#ebf5f8d7';
-			}
-		});
-	}
+function setApiDetail(info) {
+	return detail = {
+		method: info[0],
+		headers: {
+			'Content-Type': info[1]
+		},
+		body: JSON.stringify(info[2])
+	};
 }
 
 // 株価取得
-btn1.addEventListener('click', { sqlNm: "SEL001_M_STOCK_JP", handleEvent: getShareInfo });
+btn1.addEventListener(CLICK, { sqlNm: "SEL001_M_STOCK_JP", handleEvent: getShareInfo });
 // 株価最新化
-btn2.addEventListener('click', { sqlNm: latestSharePrm, handleEvent: latestShare });
+btn2.addEventListener(CLICK, { sqlNm: latestSharePrm, handleEvent: latestShare });
 
