@@ -2,7 +2,6 @@ const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOC
 
 /**
  * トランから株価取得
- * @param {実行SQL名} sqlNm 
  */
 async function getShareInfo() {
 	const res = await fetch(GET_DB_DATA + "/" + this.sqlNm).catch(error => {
@@ -27,7 +26,6 @@ async function getShareInfo() {
 
 /**
  * APIを実行して最新の株価取得しDB登録
- * @param {実行SQL名} sqlNm 
  */
 async function latestShare() {
 	const sql1 = this.sqlNm[0];
@@ -51,8 +49,7 @@ async function latestShare() {
 	const result = await res.json();
 
 	// YahooFinanceAPIを実行する。
-	const detail = setApiDetail([METHOD_POST, APPLICATION_JSON, result]);
-	const res2 = await fetch(GET_SHARE_INFO_JP, detail).catch(error => {
+	const res2 = await fetch(GET_SHARE_INFO_JP, setApiDetail([METHOD_POST, APPLICATION_JSON, result])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -81,9 +78,8 @@ async function latestShare() {
 	}
 
 	// DB登録前のチェック
-	const detail1 = setApiDetail([METHOD_POST, APPLICATION_JSON, result]);
 	const sql2 = this.sqlNm[1];
-	const res1 = await fetch(CHK_DB_DATA + "/" + sql2, detail1).catch(error => {
+	const res1 = await fetch(CHK_DB_DATA + "/" + sql2, setApiDetail([METHOD_POST, APPLICATION_JSON, result])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -97,19 +93,19 @@ async function latestShare() {
 		return;
 	}
 
-	// 結果を画面表示する。
-	createTable(result);
-
 	// DB登録
-	const detail2 = setApiDetail([METHOD_POST, APPLICATION_JSON, result2]);
 	const sql3 = this.sqlNm[2];
-	await fetch(INS_DB_DATA + "/" + sql3, detail2).then(() => {
+	await fetch(INS_DB_DATA + "/" + sql3, setApiDetail([METHOD_POST, APPLICATION_JSON, result2])).then(() => {
 		alert(LATEST_COMPLETE);
 	});
 }
 
-// 【更新ボタン押下時のイベント】
-// 特定銘柄のみ更新
+/**
+ * 【更新ボタン押下時のイベント】
+ * 特定銘柄のみ更新
+ * @param {銘柄情報} value 
+ * @returns 
+ */
 async function alt(value) {
 	let body = [];
 	let id = {};
@@ -118,8 +114,7 @@ async function alt(value) {
 
 	// YahooFinanceAPIを実行する。
 	// JSONイメージ [{"銘柄コード": 9432}]
-	const detail = setApiDetail([METHOD_POST, APPLICATION_JSON, body]);
-	const res = await fetch(GET_SHARE_INFO_JP, detail).catch(error => {
+	const res = await fetch(GET_SHARE_INFO_JP, setApiDetail([METHOD_POST, APPLICATION_JSON, body])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -127,8 +122,7 @@ async function alt(value) {
 	const result = await res.json();
 
 	// DB登録チェック
-	const detail1 = setApiDetail([METHOD_POST, APPLICATION_JSON, result]);
-	const res1 = await fetch(CHK_DB_DATA + "/" + "SEL002_T_STOCK_JP", detail1).catch(error => {
+	const res1 = await fetch(CHK_DB_DATA + "/" + "SEL002_T_STOCK_JP", setApiDetail([METHOD_POST, APPLICATION_JSON, result])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -142,7 +136,7 @@ async function alt(value) {
 	}
 
 	// DB登録
-	await fetch(INS_DB_DATA + "/" + "INS001_T_STOCK_JP", detail1);
+	await fetch(INS_DB_DATA + "/" + "INS001_T_STOCK_JP", setApiDetail([METHOD_POST, APPLICATION_JSON, result]));
 	alert(REGISTER_COMPLETE);
 }
 
@@ -164,4 +158,3 @@ function setApiDetail(info) {
 btn1.addEventListener(CLICK, { sqlNm: "SEL001_M_STOCK_JP", handleEvent: getShareInfo });
 // 株価最新化
 btn2.addEventListener(CLICK, { sqlNm: latestSharePrm, handleEvent: latestShare });
-

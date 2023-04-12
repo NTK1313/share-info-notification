@@ -21,12 +21,10 @@ class TableCreate {
 		data += '<th>更新</th>';
 		// ボディ作成
 		this.DOM.table.innerHTML = data + this._makeBody();
-		console.log(this.DOM.table.innerHTML);
 	}
 	_makeBody() {
 		return this.result.reduce((acc, curr) => {
 			let valueList = Object.values(curr);
-			console.log(valueList);
 			// 銘柄コードをIDとして付与
 			let code = valueList[0];
 			// 1カラムずつ編集
@@ -35,7 +33,6 @@ class TableCreate {
 			}, "");
 			// 更新ボタン付与(ボタン押下時にイベント設定)
 			edit += `<td><button id="${code}"  onclick="alt(this)">更新</button></td>`;
-			console.log(edit);
 			// 1レコードずつ編集
 			return `${acc}<tr>${edit}</tr>`;
 		}, "");
