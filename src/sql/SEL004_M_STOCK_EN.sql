@@ -2,7 +2,7 @@ select
 	tgt.ticker as "銘柄コード",
 	tgt.br_name as "企業名",
 	tgt.market_segment as "市場区分",
-	to_char(tgt.shori_date, 'YYYY-MM-DD HH24:MM:SS') as "処理時間（株価）",
+	to_char(tgt.shori_date, 'YYYY-MM-DD HH24:MI:SS') as "処理時間（株価）",
 	tgt.regular_market_price as "株価（ドル）",
 	tgt.regular_market_change as "前日からの変動値"
 from
