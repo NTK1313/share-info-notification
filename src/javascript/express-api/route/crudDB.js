@@ -56,11 +56,9 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 		v.push(uniquCodes);
 		v.push(uniqueTimes);
 	} else {
-		const codes = reqstr.map(function (value) {
-			return value['brCd'];
-		})
-		const uniquCodes = Array.from(new Map(codes.map((value) => [value])));
-		v.push(uniquCodes);
+		// 銘柄登録
+		const code = reqstr[0]['brCd'];
+		v.push(code);
 	}
 	
 	let query = {

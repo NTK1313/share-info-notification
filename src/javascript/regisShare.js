@@ -1,5 +1,5 @@
-const INS_DB_DATA = 'http://localhost:3000/api/v1/crudDB/insertDBData';
-const CHK_DB_DATA = 'http://localhost:3000/api/v1/crudDB/checkDBData';
+// const INS_DB_DATA = 'http://localhost:3000/api/v1/crudDB/insertDBData';
+// const CHK_DB_DATA = d'http://localhost:3000/api/v1/crudDB/checkDBData';
 
 /**
  * 日本株・米国株の市場区分
