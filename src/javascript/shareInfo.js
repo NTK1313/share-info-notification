@@ -87,9 +87,14 @@ async function latestShare() {
 	const resultChkDb = await execChkDb.json();
 
 	// 既に最新データが登録されている場合は後続処理スキップ
-	if (resultChkDb[0]['count'] > 0) {
-		alert('最新情報がDB登録されているため登録処理をスキップします。');
-		createTable(resultGetDb);
+	if (resultChkDb.length > 0) {
+		const codeInfo = resultChkDb.map(function (value) {
+			return value['chk'];
+		});
+		let data = codeInfo.reduce((acc, curr) => {
+			return `${acc}\n${curr}`;
+		}, '\n');
+		alert(ALREADY_REGISTER_ALL + data);
 		return;
 	}
 
@@ -130,7 +135,7 @@ async function alt(value) {
 	const resultChkDb = await execChkDb.json();
 
 	// 既に最新データが登録されている場合は後続処理スキップ
-	if (resultChkDb[0]['count'] > 0) {
+	if (resultChkDb.length > 0) {
 		alert(ALREADY_REGISTER);
 		return;
 	}

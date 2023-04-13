@@ -11,6 +11,9 @@
   background-color: rgba(21, 6, 236, 0.8431372549);
   color: white;
 }
+#tablebody button {
+  margin-right: -4px;
+}
 
 #btn1 {
   cursor: pointer;

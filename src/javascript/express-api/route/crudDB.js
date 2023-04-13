@@ -39,16 +39,30 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 	// URL
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
 	const sqlstr = req1.params.sqlNm + ".sql"
-	let sql = f.sqlReader(sqlstr);
+	const sql = f.sqlReader(sqlstr);
 	// チェック対象は1レコードだけ
 	let v = [];
 	if (sqlstr == "SEL002_T_STOCK_JP.sql" || sqlstr == "SEL005_T_STOCK_EN.sql") {
-		v.push(reqstr[0]['銘柄コード']);
-		v.push(reqstr[0]['処理時間（株価）']);
+		// 銘柄コードの配列と処理時間の配列を配列にセット
+		const codes = reqstr.map(function (value) {
+			return value['銘柄コード'];
+		});
+		let times = reqstr.map(function (value) {
+			return value['処理時間（株価）'];
+		});
+		// 重複削除
+		const uniquCodes = Array.from(new Map(codes.map((value) => [value])));
+		const uniqueTimes = Array.from(new Map(times.map((value) => [value])));
+		v.push(uniquCodes);
+		v.push(uniqueTimes);
 	} else {
-		v.push(reqstr[0]['brCd']);
+		const codes = reqstr.map(function (value) {
+			return value['brCd'];
+		})
+		const uniquCodes = Array.from(new Map(codes.map((value) => [value])));
+		v.push(uniquCodes);
 	}
-
+	
 	let query = {
 		text: sql,
 		values: v,
