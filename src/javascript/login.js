@@ -6,12 +6,12 @@ function nextPage() {
 	console.log(pwd);
 	// ログイン印象OKの場合
 	if (id && pwd) {
-		const url = "../html/shareInfo.html";
+		const url = '../html/shareInfo.html';
 		location.href = url;
 	} else {
-		alert("ログインID、またはパスワードが正しくありません。");
-		console.log("test");
-		const url = "../html/loginNg.html";
+		alert('ログインID、またはパスワードが正しくありません。');
+		console.log('test');
+		const url = '../html/loginNg.html';
 		location.href = url;
 	}
 }

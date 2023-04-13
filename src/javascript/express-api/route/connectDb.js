@@ -1,11 +1,11 @@
 // TODO:同期的に実行できないから調査が必要
 exports.execSql = async function () {
-	const { Client } = require("../../../node-npm/node_modules/pg");
+	const { Client } = require('../../../node-npm/node_modules/pg');
 	const client = new Client({
-		user: "postgres",
-		host: "127.0.0.1",
-		database: "sharedb",
-		password: "skskr20081106",
+		user: 'postgres',
+		host: '127.0.0.1',
+		database: 'sharedb',
+		password: 'skskr20081106',
 		port: 5432,
 	});
 	async function execQuery() {

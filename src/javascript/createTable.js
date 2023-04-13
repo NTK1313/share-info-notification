@@ -17,7 +17,7 @@ class TableCreate {
 		const keyList = Object.keys(share);
 		let data = keyList.reduce((acc, curr) => {
 			return `${acc}<th>${curr}</th>`;
-		}, "");
+		}, '');
 		data += '<th>更新</th>';
 		// ボディ作成
 		this.DOM.table.innerHTML = data + this._makeBody();
@@ -30,12 +30,12 @@ class TableCreate {
 			// 1カラムずつ編集
 			let edit = valueList.reduce((acc1, curr1) => {
 				return `${acc1}<td>${curr1}</td>`;
-			}, "");
+			}, '');
 			// 更新ボタン付与(ボタン押下時にイベント設定)
 			edit += `<td><button id="${code}"  onclick="alt(this)">更新</button></td>`;
 			// 1レコードずつ編集
 			return `${acc}<tr>${edit}</tr>`;
-		}, "");
+		}, '');
 	}
 }
 

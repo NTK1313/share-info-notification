@@ -12,7 +12,7 @@ router.post('/shareInfo/:kbn', async (req, res) => {
 	const jpEn = req.params.kbn;
 	// 銘柄コードのみのリスト作成
 	let codes = reqstr.map(function (value) {
-		return value["銘柄コード"];
+		return value['銘柄コード'];
 	})
 	// リクエストから必要な情報を抜き出し配列で保持
 	const results = await call(codes, jpEn);
@@ -31,8 +31,8 @@ async function call(codes, jpEn) {
 	let results = [];
 	for (let i = 0; i < codes.length; i++) {
 		let code = codes[i];
-		if (jpEn == "JP") {
-			code = code + ".T";
+		if (jpEn == 'JP') {
+			code = code + '.T';
 		}
 		// CMDコマンド:npx yahoo-finance2 quote 3092.T
 		let result = await yahooFinance.quote(code);
@@ -41,10 +41,10 @@ async function call(codes, jpEn) {
 		let wk = {};
 		wk['銘柄コード'] = codes[i];
 		wk['処理時間（株価）'] = convertTime(result.regularMarketTime);
-		if (jpEn == "JP") {
-			wk['株価（円）'] = "\\" + result.regularMarketPrice;
+		if (jpEn == 'JP') {
+			wk['株価（円）'] = '\\' + result.regularMarketPrice;
 		} else {
-			wk['株価（ドル）'] = "$" + result.regularMarketPrice;
+			wk['株価（ドル）'] = '$' + result.regularMarketPrice;
 		}
 		wk['前日からの変動値'] = Math.round(result.regularMarketChange * 10) / 10;
 		results.push(wk);
@@ -61,12 +61,12 @@ async function call(codes, jpEn) {
  */
 function convertTime(dt) {
 	let y = dt.getFullYear();
-	let m = ("00" + (dt.getMonth() + 1)).slice(-2);
-	let d = ("00" + dt.getDate()).slice(-2);
-	let hh = ("00" + dt.getHours()).slice(-2);
-	let mm = ("00" + dt.getMinutes()).slice(-2);
-	let ss = ("00" + dt.getSeconds()).slice(-2);
-	let result = y + "-" + m + "-" + d + " " + hh + ":" + mm + ":" + ss;
+	let m = ('00' + (dt.getMonth() + 1)).slice(-2);
+	let d = ('00' + dt.getDate()).slice(-2);
+	let hh = ('00' + dt.getHours()).slice(-2);
+	let mm = ('00' + dt.getMinutes()).slice(-2);
+	let ss = ('00' + dt.getSeconds()).slice(-2);
+	let result = y + '-' + m + '-' + d + ' ' + hh + ':' + mm + ':' + ss;
 	return result;
 }
 

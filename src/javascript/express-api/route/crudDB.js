@@ -1,7 +1,7 @@
 const express = require('../../../node-npm/node_modules/express');
 const router = express.Router();
 let { Client } = require('../../../node-npm/node_modules/pg/lib');
-const f = require("./execSql.js");
+const f = require('./execSql.js');
 
 // TODO:/getPriceの処理のように非同期させればDB接続を共通化出来そう。
 
@@ -12,7 +12,7 @@ const f = require("./execSql.js");
 router.get('/getDBData/:sqlNm', function (req, res) {
 	// SQL実行
 	const client = new connectDB();
-	const sel001 = f.sqlReader(req.params.sqlNm + ".sql");
+	const sel001 = f.sqlReader(req.params.sqlNm + '.sql');
 
 	// // クエリ実行は非同期処理なので、後続処理はコールバック関数として書く
 	client.query(sel001, (err, res2) => {
@@ -38,11 +38,11 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 	const client = new connectDB();
 	// URL
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const sqlstr = req1.params.sqlNm + ".sql"
+	const sqlstr = req1.params.sqlNm + '.sql'
 	const sql = f.sqlReader(sqlstr);
 	// チェック対象は1レコードだけ
 	let v = [];
-	if (sqlstr == "SEL002_T_STOCK_JP.sql" || sqlstr == "SEL005_T_STOCK_EN.sql") {
+	if (sqlstr == 'SEL002_T_STOCK_JP.sql' || sqlstr == 'SEL005_T_STOCK_EN.sql') {
 		// 銘柄コードの配列と処理時間の配列を配列にセット
 		const codes = reqstr.map(function (value) {
 			return value['銘柄コード'];
@@ -88,15 +88,15 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 router.post('/insertDBData/:sqlNm', function (req1, res1) {
 	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	// const sqlstr = reqstr[0]["sqlNm"] ? reqstr[0]["sqlNm"] : "INS001_T_STOCK_JP.sql";
-	const sql = f.sqlReader(req1.params.sqlNm + ".sql");
+	// const sqlstr = reqstr[0]['sqlNm'] ? reqstr[0]['sqlNm'] : 'INS001_T_STOCK_JP.sql';
+	const sql = f.sqlReader(req1.params.sqlNm + '.sql');
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
 		let v = [];
 		let keyList = Object.keys(reqstr[i]);
 		for (let key in keyList) {
-			if (keyList[key] != "sqlNm") {
+			if (keyList[key] != 'sqlNm') {
 				v.push(reqstr[i][keyList[key]]);
 			}
 		}
@@ -129,10 +129,10 @@ router.post('/insertDBData/:sqlNm', function (req1, res1) {
 class connectDB {
 	constructor() {
 		const client = new Client({
-			user: "postgres",
-			host: "127.0.0.1",
-			database: "sharedb",
-			password: "skskr20081106",
+			user: 'postgres',
+			host: '127.0.0.1',
+			database: 'sharedb',
+			password: 'skskr20081106',
 			port: 5432,
 		});
 		client.connect();

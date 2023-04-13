@@ -1,4 +1,4 @@
-const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOCK_JP"];
+const latestSharePrm = ['SEL001_M_STOCK_JP', 'SEL002_T_STOCK_JP', 'INS001_T_STOCK_JP'];
 
 /**
  * トランから株価取得
@@ -6,7 +6,7 @@ const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOC
 async function getShareInfo() {
 	const hc = new EditHtmlClass('.loader');
 	hc.add('latest');
-	const execGetDb = await fetch(GET_DB_DATA + "/" + this.sqlNm).catch(error => {
+	const execGetDb = await fetch(GET_DB_DATA + '/' + this.sqlNm).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -35,7 +35,7 @@ async function latestShare() {
 	hc.add('latest');
 
 	const sel001 = this.sqlNm[0];
-	const execGetDb = await fetch(GET_DB_DATA + "/" + sel001).catch(error => {
+	const execGetDb = await fetch(GET_DB_DATA + '/' + sel001).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -85,7 +85,7 @@ async function latestShare() {
 
 	// DB登録前のチェック
 	const sel002 = this.sqlNm[1];
-	const execChkDb = await fetch(CHK_DB_DATA + "/" + sel002, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '/' + sel002, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -108,7 +108,7 @@ async function latestShare() {
 
 	// DB登録
 	const ins001 = this.sqlNm[2];
-	await fetch(INS_DB_DATA + "/" + ins001, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).then(() => {
+	await fetch(INS_DB_DATA + '/' + ins001, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).then(() => {
 		alert(LATEST_COMPLETE);
 	});
 
@@ -138,7 +138,7 @@ async function alt(value) {
 	const resultGetShareInfo = await execGetShareInfo.json();
 
 	// DB登録チェック
-	const execChkDb = await fetch(CHK_DB_DATA + "/" + "SEL002_T_STOCK_JP", setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '/' + 'SEL002_T_STOCK_JP', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -152,11 +152,11 @@ async function alt(value) {
 	}
 
 	// DB登録
-	await fetch(INS_DB_DATA + "/" + "INS001_T_STOCK_JP", setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]));
+	await fetch(INS_DB_DATA + '/' + 'INS001_T_STOCK_JP', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]));
 	alert(REGISTER_COMPLETE);
 }
 
 // 株価取得
-btn1.addEventListener(CLICK, { sqlNm: "SEL001_M_STOCK_JP", handleEvent: getShareInfo });
+btn1.addEventListener(CLICK, { sqlNm: 'SEL001_M_STOCK_JP', handleEvent: getShareInfo });
 // 株価最新化
 btn2.addEventListener(CLICK, { sqlNm: latestSharePrm, handleEvent: latestShare });
