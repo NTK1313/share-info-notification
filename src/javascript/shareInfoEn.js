@@ -5,6 +5,8 @@ const latestSharePrm = ["SEL004_M_STOCK_EN", "SEL005_T_STOCK_EN", "INS003_T_STOC
  * @param {実行SQL名} sqlNm 
  */
 async function getShareInfo() {
+	const hc = new EditHtmlClass('.loader');
+	hc.add('latest');
 	const execGetDb = await fetch(GET_DB_DATA + "/" + this.sqlNm).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
@@ -22,6 +24,7 @@ async function getShareInfo() {
 		]
 	*/
 	const resultGetDb = await execGetDb.json();
+	hc.remove('latest');
 	createTable(resultGetDb);
 };
 
@@ -30,6 +33,9 @@ async function getShareInfo() {
  * @param {実行SQL名} sqlNm 
  */
 async function latestShare() {
+	const hc = new EditHtmlClass('.loader');
+	hc.add('latest');
+
 	const sel004 = this.sqlNm[0];
 	const execGetDb = await fetch(GET_DB_DATA + "/" + sel004).catch(error => {
 		console.error(NETWORK_ERR, error);
@@ -96,6 +102,8 @@ async function latestShare() {
 		let data = codeInfo.reduce((acc, curr) => {
 			return `${acc}\n${curr}`;
 		}, '\n');
+		hc.remove('latest');
+		createTable(resultGetDb);
 		alert(ALREADY_REGISTER_ALL + data);
 		return;
 	}
@@ -103,6 +111,9 @@ async function latestShare() {
 	// DB登録（非同期）
 	const ins003 = this.sqlNm[2];
 	fetch(INS_DB_DATA + "/" + ins003, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]));
+
+	hc.remove('latest');
+	createTable(resultGetDb);
 }
 
 /**

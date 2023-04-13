@@ -4,6 +4,8 @@ const latestSharePrm = ["SEL001_M_STOCK_JP", "SEL002_T_STOCK_JP", "INS001_T_STOC
  * トランから株価取得
  */
 async function getShareInfo() {
+	const hc = new EditHtmlClass('.loader');
+	hc.add('latest');
 	const execGetDb = await fetch(GET_DB_DATA + "/" + this.sqlNm).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
@@ -21,6 +23,7 @@ async function getShareInfo() {
 		]
 	*/
 	const resultGetDb = await execGetDb.json();
+	hc.remove('latest');
 	createTable(resultGetDb);
 };
 
@@ -28,6 +31,9 @@ async function getShareInfo() {
  * APIを実行して最新の株価取得しDB登録
  */
 async function latestShare() {
+	const hc = new EditHtmlClass('.loader');
+	hc.add('latest');
+
 	const sel001 = this.sqlNm[0];
 	const execGetDb = await fetch(GET_DB_DATA + "/" + sel001).catch(error => {
 		console.error(NETWORK_ERR, error);
@@ -94,6 +100,8 @@ async function latestShare() {
 		let data = codeInfo.reduce((acc, curr) => {
 			return `${acc}\n${curr}`;
 		}, '\n');
+		hc.remove('latest');
+		createTable(resultGetDb);
 		alert(ALREADY_REGISTER_ALL + data);
 		return;
 	}
@@ -103,6 +111,9 @@ async function latestShare() {
 	await fetch(INS_DB_DATA + "/" + ins001, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).then(() => {
 		alert(LATEST_COMPLETE);
 	});
+
+	hc.remove('latest');
+	createTable(resultGetDb);
 }
 
 /**

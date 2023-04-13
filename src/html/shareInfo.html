@@ -6,6 +6,8 @@
 	<title>日本株式一覧</title>
 	<link rel="stylesheet" href="../css/shareInfo.css">
 	<link rel="stylesheet" href="../css/center_atom.css">
+	<link rel="stylesheet" href="../css/loader.css">
+	<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
 	<script src="../javascript/common/pace.js"></script>
 </head>
 <header id="head">
@@ -18,10 +20,12 @@
 		<br>
 		<br>
 		<br>
-		<table border="1" width="900">
-			<tbody id="tablebody">
-			</tbody>
-		</table>
+		<div class="loader">
+			<table border="1" width="900">
+				<tbody id="tablebody">
+				</tbody>
+			</table>
+		</div>
 		<br>
 		<button id="btn1">株価取得</button>
 		<button id="btn2">株価一括最新化</button>
@@ -29,6 +33,7 @@
 		<button id="register" onclick="location.href='regisShare.html'">銘柄登録</button>
 		<script src="../javascript/common/constant.js"></script>
 		<script src="../javascript/common/apiCommon.js"></script>
+		<script src="../javascript/common/htmlCommon.js"></script>
 		<script src="../javascript/createTable.js"></script>
 		<script src="../javascript/shareInfo.js"></script>
 	</div>
