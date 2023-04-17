@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>銘柄登録</title>
     <link rel="stylesheet" href="../css/regisShare.css">
+    <link rel="stylesheet" href="../css/center_atom.css">
+    <script src="../javascript/common/pace.js"></script>
+
 </head>
 
 <header id="head">
@@ -16,26 +19,42 @@
         <br>
         <br>
         <br>
-        <form name="login_form">
+        <form name="regis_form">
             <p>銘柄情報を入力して登録ボタンを押下してください。</p>
             <div>
+                <div>
+                    <span class="display">株式区分</span>
+                    <span class="display__require">必須</span>
+                </div>
                 <select id="enjp" name="enjp">
-                    <option value="" selected>株式を選択してください</option>
+                    <option value="" selected>選択してください</option>
                     <option value="JP">日本株</option>
                     <option value="EN">米国株</option>
                 </select>
                 <br>
                 <br>
                 <div>
-                    <input id="brCd" name="brCd" placeholder="銘柄コード or ティッカー" >
+                    <div>
+                        <span class="display">銘柄コード・ティッカー</span>
+                        <span class="display__require">必須</span>
+                    </div>
+                    <input id="brCd" name="brCd" placeholder="1111 or PG">
                 </div>
                 <br>
                 <div>
-                    <input id="brNm" name="brNm" placeholder="企業名" >
+                    <div>
+                        <span class="display">企業名</span>
+                        <span class="display__require">必須</span>
+                    </div>
+                    <input id="brNm" name="brNm" placeholder="三菱UFJ">
                 </div>
                 <br>
+                <div>
+                    <span class="display">市場区分</span>
+                    <span class="display__require">必須</span>
+                </div>
                 <select id="segment" name="segment">
-                    <option value="" selected>市場区分を選択してください</option>
+                    <option value="" selected>選択してください</option>
                 </select>
             </div>
         </form>
@@ -44,8 +63,9 @@
         <button class="back" onclick="location.href='login.html'">ログイン画面に戻る</button>
         <button class="back" onclick="location.href='shareInfo.html'">日本株一覧画面に戻る</button>
         <button class="back" onclick="location.href='shareInfoEn.html'">米国株一覧画面に戻る</button>
+        <button id="register" onclick="location.href='updateShare.html'">銘柄更新</button>
         <script src="../javascript/common/constant.js"></script>
-		<script src="../javascript/common/apiCommon.js"></script>
+        <script src="../javascript/common/apiCommon.js"></script>
         <script src="../javascript/regisShare.js"></script>
     </div>
 </body>

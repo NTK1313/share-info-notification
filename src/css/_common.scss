@@ -2,6 +2,8 @@ $cWhite: white;
 $cGreen: green;
 $cBlue: blue;
 $cBlack:black;
+$cDisplayColor:rgba(133, 124, 124, 0.842);
+$cRequireRed:#ed4545eb;
 
 @mixin button_color(){
 	background-color: #16b;

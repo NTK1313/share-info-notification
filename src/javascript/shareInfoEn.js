@@ -127,7 +127,7 @@ async function latestShare() {
  * @returns 
  */
 async function update(value) {
-	const body = [{'銘柄コード':value.id}];
+	const body = [{ '銘柄コード': value.id }];
 
 	// YahooFinanceAPIを実行する。
 	// JSONイメージ [{"銘柄コード": PG}]
@@ -153,8 +153,10 @@ async function update(value) {
 	}
 
 	// DB登録
-	await fetch(INS_DB_DATA + '/' + 'INS003_T_STOCK_EN', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]));
-	alert(REGISTER_COMPLETE);
+	await fetch(INS_DB_DATA + '/' + 'INS003_T_STOCK_EN', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]).then(() => {
+		hc.remove('latest');
+		alert(LATEST_COMPLETE);
+	}));
 }
 
 // 株価取得

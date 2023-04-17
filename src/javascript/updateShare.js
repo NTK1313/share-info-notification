@@ -122,13 +122,13 @@ async function update(value) {
 		return;
 	}
 	elements.push(element);
-
 	// 実行SQL
 	const updSql = enjp == 'JP' ? 'UPD001_M_STOCK_JP' : 'UPD002_M_STOCK_EN';
 	await fetch(UPD_DB_DATA + '/' + updSql, setApiDetail([METHOD_POST, APPLICATION_JSON, elements])).catch(() => {
 		// TODO:サーバ側でも処理が成功するのになぜかcatchに入ってしまうので調査必要。
 		alert(UPDATE_COMPLETE);
 	});
+
 }
 
 // 要素を取得
