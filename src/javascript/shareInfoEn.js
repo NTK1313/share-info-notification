@@ -9,6 +9,7 @@ async function getShareInfo() {
 	hc.add('latest');
 	const execGetDb = await fetch(GET_DB_DATA + '/' + this.sqlNm).catch(error => {
 		console.error(NETWORK_ERR, error);
+		hc.remove('latest');
 		alert(NETWORK_ERR);
 		return;
 	});
@@ -39,6 +40,7 @@ async function latestShare() {
 	const sel004 = this.sqlNm[0];
 	const execGetDb = await fetch(GET_DB_DATA + '/' + sel004).catch(error => {
 		console.error(NETWORK_ERR, error);
+		hc.remove('latest');
 		alert(NETWORK_ERR);
 		return;
 	});
@@ -59,6 +61,7 @@ async function latestShare() {
 	// YahooFinanceAPIを実行する。
 	const execGetShareInfo = await fetch(GET_SHARE_INFO_EN, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
 		console.error(NETWORK_ERR, error);
+		hc.remove('latest');
 		alert(NETWORK_ERR);
 		return;
 	});
@@ -89,6 +92,7 @@ async function latestShare() {
 	const sel005 = this.sqlNm[1];
 	const execChkDb = await fetch(CHK_DB_DATA + '/' + sel005, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
 		console.error(NETWORK_ERR, error);
+		hc.remove('latest');
 		alert(NETWORK_ERR);
 		return;
 	});
@@ -122,11 +126,8 @@ async function latestShare() {
  * @param {銘柄情報} value 
  * @returns 
  */
-async function alt(value) {
-	let body = [];
-	let id = {};
-	id['銘柄コード'] = value.id;
-	body.push(id);
+async function update(value) {
+	const body = [{'銘柄コード':value.id}];
 
 	// YahooFinanceAPIを実行する。
 	// JSONイメージ [{"銘柄コード": PG}]

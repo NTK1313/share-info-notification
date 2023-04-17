@@ -37,46 +37,40 @@ async function regisInfo() {
 	const brCd = document.querySelector('#brCd').value;
 	const brNm = document.querySelector('#brNm').value;
 	const segment = document.querySelector('#segment').value;
-	const regexp = new RegExp('[0-9]{4}');
+	const regexp = new RegExp('^[1-9][0-9]{3}$');
 
 	// 入力値チェック
-	if (brCd == '') {
+	if (brCd.length == 0) {
 		alert(REQUIRE_BR_CD);
 		return;
-	} else if (brNm == '') {
+	} else if (brNm.length == 0) {
 		alert(REQUIRE_BR_NM);
 		return;
-	} else if (segment == '') {
+	} else if (segment.length == 0) {
 		alert(REQUIRE_SEGMENT);
 		return;
 	}
 	// 桁数チェック
-	if (!regexp.test(brCd) && enjp == JP) {
+	if (enjp == JP &&  !regexp.test(brCd)) {
 		alert(KETA_CHK_BR_CD);
 		return;
 	}
 
 	// DB重複チェック
-	let check = [{ 'brCd': brCd }];
+	const check = [{ 'brCd': brCd }];
 	let sqlNm1 = 'SEL003_M_STOCK_JP';
 	if (enjp == EN) {
 		sqlNm1 = 'SEL006_M_STOCK_EN';
 	}
-	const res1 = await fetch(CHK_DB_DATA + '/' + sqlNm1, {
-		method: METHOD_POST,
-		headers: {
-			'Content-Type': APPLICATION_JSON
-		},
-		body: JSON.stringify(check)
-	}).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '/' + sqlNm1, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
 	});
-	const result1 = await res1.json();
+	const resultChkDb = await execChkDb.json();
 
 	// 既に最新データが登録されている場合は後続処理スキップ
-	if (result1[0]['count'] > 0) {
+	if (resultChkDb[0]['count'] > 0) {
 		alert(DUPLICATE_BR_CD);
 		return;
 	}
@@ -100,13 +94,8 @@ async function regisInfo() {
 	if (enjp == EN) {
 		sqlNm2 = 'INS004_M_STOCK_EN';
 	}
-	const res = await fetch(INS_DB_DATA + '/' + sqlNm2, {
-		method: METHOD_POST,
-		headers: {
-			'Content-Type': APPLICATION_JSON
-		},
-		body: JSON.stringify(regisInfo)
-	}).catch(error => {
+	// setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])
+	await fetch(INS_DB_DATA + '/' + sqlNm2, setApiDetail([METHOD_POST, APPLICATION_JSON, regisInfo])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;

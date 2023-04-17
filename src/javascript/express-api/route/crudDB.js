@@ -40,7 +40,6 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
 	const sqlstr = req1.params.sqlNm + '.sql'
 	const sql = f.sqlReader(sqlstr);
-	// チェック対象は1レコードだけ
 	let v = [];
 	if (sqlstr == 'SEL002_T_STOCK_JP.sql' || sqlstr == 'SEL005_T_STOCK_EN.sql') {
 		// 銘柄コードの配列と処理時間の配列を配列にセット
@@ -56,11 +55,11 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 		v.push(uniquCodes);
 		v.push(uniqueTimes);
 	} else {
-		// 銘柄登録
+		// 銘柄登録、銘柄更新
 		const code = reqstr[0]['brCd'];
 		v.push(code);
 	}
-	
+
 	let query = {
 		text: sql,
 		values: v,
@@ -80,7 +79,6 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 	});
 });
 
-
 /**
  * DB登録
  * http://localhost:3000/api/v1/crudDB/insertDBData
@@ -88,7 +86,6 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 router.post('/insertDBData/:sqlNm', function (req1, res1) {
 	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	// const sqlstr = reqstr[0]['sqlNm'] ? reqstr[0]['sqlNm'] : 'INS001_T_STOCK_JP.sql';
 	const sql = f.sqlReader(req1.params.sqlNm + '.sql');
 
 	// ループして１件ずつINSERTする
@@ -96,9 +93,7 @@ router.post('/insertDBData/:sqlNm', function (req1, res1) {
 		let v = [];
 		let keyList = Object.keys(reqstr[i]);
 		for (let key in keyList) {
-			if (keyList[key] != 'sqlNm') {
-				v.push(reqstr[i][keyList[key]]);
-			}
+			v.push(reqstr[i][keyList[key]]);
 		}
 		let query = {
 			text: sql,
@@ -120,6 +115,37 @@ router.post('/insertDBData/:sqlNm', function (req1, res1) {
 	}
 	console.log('登録処理完了');
 	res1.json('[{"MSG": 処理完了}]');
+});
+
+/**
+ * DB更新
+ * http://localhost:3000/api/v1/crudDB/updateDBData
+ */
+router.post('/updateDBData/:sqlNm', function (req1, res1) {
+	const client = new connectDB();
+	// 更新は1件ずつ行う想定
+	const reqstr = JSON.parse(JSON.stringify(req1.body))[0];
+	const sql = f.sqlReader(req1.params.sqlNm + '.sql');
+
+	let keyList = Object.keys(reqstr);
+	let query = {
+		text: sql,
+		values: keyList,
+	}
+	client.query(query, (err, res) => {
+		// クエリ実行後の処理
+		if (err) {
+			console.log('処理ERR');
+			console.log(err);
+			throw err;
+		} else {
+			console.log('処理完了');
+			// const obj = JSON.parse(JSON.stringify(res.rows));
+			client.end();
+			// res1.json(obj);
+			res1.json('[{"MSG": 処理完了}]');
+		}
+	});
 });
 
 /**

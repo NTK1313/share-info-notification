@@ -1,0 +1,12 @@
+update
+	m_stock_jp
+set
+	br_name = $2,
+	market_segment = $3,
+	delflg = case
+		when $4 = 'ON' then cast('t' as boolean)
+		else cast('f' as boolean)
+	end,
+	update_date =  current_timestamp
+where
+	br_cd = $1;

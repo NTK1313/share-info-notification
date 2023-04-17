@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>銘柄登録</title>
-    <link rel="stylesheet" href="../css/regisShare.css">
+    <title>銘柄更新</title>
+    <link rel="stylesheet" href="../css/updateShare.css">
+	<link rel="stylesheet" href="../css/loader.css">
 </head>
 
 <header id="head">
-    <h1>銘柄登録フォーム</h1>
+    <h1>銘柄更新フォーム</h1>
 </header>
 
 <body>
@@ -17,7 +18,7 @@
         <br>
         <br>
         <form name="login_form">
-            <p>銘柄情報を入力して登録ボタンを押下してください。</p>
+            <p>更新したい銘柄を入力してください。</p>
             <div>
                 <select id="enjp" name="enjp">
                     <option value="" selected>株式を選択してください</option>
@@ -30,23 +31,23 @@
                     <input id="brCd" name="brCd" placeholder="銘柄コード or ティッカー" >
                 </div>
                 <br>
-                <div>
-                    <input id="brNm" name="brNm" placeholder="企業名" >
-                </div>
-                <br>
-                <select id="segment" name="segment">
-                    <option value="" selected>市場区分を選択してください</option>
-                </select>
+            </div>
+            <div class="loader">
+                <table border="1" >
+                    <tbody id="tablebody">
+                    </tbody>
+                </table>
+                <br>   
             </div>
         </form>
-        <br>
-        <button id="btn" class="register">登録</button>
-        <button class="back" onclick="location.href='login.html'">ログイン画面に戻る</button>
+        <button id="select" class="select">検索</button>
         <button class="back" onclick="location.href='shareInfo.html'">日本株一覧画面に戻る</button>
         <button class="back" onclick="location.href='shareInfoEn.html'">米国株一覧画面に戻る</button>
         <script src="../javascript/common/constant.js"></script>
 		<script src="../javascript/common/apiCommon.js"></script>
-        <script src="../javascript/regisShare.js"></script>
+		<script src="../javascript/common/htmlCommon.js"></script>
+		<script src="../javascript/createTable.js"></script>
+        <script src="../javascript/updateShare.js"></script>
     </div>
 </body>
 

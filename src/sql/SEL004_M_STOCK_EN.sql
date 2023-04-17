@@ -22,6 +22,8 @@ from
 		from
 			m_stock_en a
 			left join t_stock_en b on a.ticker = b.ticker
+		where
+			a.delflg = 'f'
 	) tgt
 where
 	-- 最新のデータ状況だけ取得
