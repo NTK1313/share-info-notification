@@ -12,11 +12,11 @@
   background-color: rgba(21, 6, 236, 0.8431372549);
   color: white;
 }
-#tablebody #ENJP {
+#tablebody td:nth-child(1) {
   text-align: center;
   font-weight: bold;
 }
-#tablebody #code {
+#tablebody td:nth-child(2) {
   text-align: center;
   font-weight: bold;
 }

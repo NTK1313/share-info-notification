@@ -16,14 +16,13 @@
 		color: cmn.$cWhite;
 	}
 
-	#ENJP {
-		text-align: center;
-		font-weight: bold;
-	}
-
-	#code {
-		text-align: center;
-		font-weight: bold;
+	td {
+		@for $i from 1 through 2 {
+			&:nth-child(#{$i}) {
+				text-align: center;
+				font-weight: bold;
+			}
+		}
 	}
 
 	& button {
