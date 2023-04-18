@@ -23,6 +23,19 @@
   background: rgba(237, 69, 69, 0.9215686275);
   border-radius: 5px;
 }
+#container select {
+  border: 2px solid rgba(0, 57, 255, 0.7803921569);
+  border-radius: 0.6em;
+  width: 17em;
+  height: 30px;
+}
+#container input {
+  border: 2px solid rgba(0, 57, 255, 0.7803921569);
+  border-radius: 0.6em;
+  width: 16em;
+  height: 20px;
+  padding: 0.3em;
+}
 #container .register {
   cursor: pointer;
   background-color: #16b;
@@ -37,6 +50,7 @@
   font-size: 14px;
   line-height: 21px;
   padding: 4px 14px;
+  border-radius: 0.3em;
 }
 #container .back {
   cursor: pointer;
@@ -52,6 +66,7 @@
   font-size: 14px;
   line-height: 21px;
   padding: 4px 14px;
+  border-radius: 0.3em;
 }
 
 #register {
@@ -68,4 +83,5 @@
   font-size: 14px;
   line-height: 21px;
   padding: 4px 14px;
+  border-radius: 0.3em;
 }/*# sourceMappingURL=regisShare.css.map */

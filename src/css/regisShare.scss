@@ -13,18 +13,26 @@
 #container {
 	text-align: left;
 
-	& .display{
+	& .display {
 		color: cmn.$cDisplayColor;
 		font-size: 14px;
 		font-weight: bold;
 
-		&__require{
+		&__require {
 			font-size: 12px;
 			color: cmn.$cWhite;
 			padding: 0px 10px;
 			background: cmn.$cRequireRed;
 			border-radius: 5px;
 		}
+	}
+
+	select {
+		@include cmn.select_format();
+	}
+
+	input {
+		@include cmn.input_format();
 	}
 
 	& .register {

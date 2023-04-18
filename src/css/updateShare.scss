@@ -24,9 +24,17 @@
 	}
 }
 
+select {
+	@include cmn.select_format();
+}
+
+input {
+	@include cmn.input_format();
+}
+
 #tablebody {
 	th {
-		background-color: #1506ecd7;
+		background-color: cmn.$cTableHeader;
 		color: cmn.$cWhite;
 		padding-left: 3px;
 		padding-right: 3px;
@@ -43,9 +51,9 @@
 
 	& button {
 		cursor: pointer;
-		border: 1px solid #00847F;
-		color: #00847F;
-		background-color: white;
+		border: 1px solid cmn.$cUpdateButton;
+		color: cmn.$cUpdateButton;
+		background-color: cmn.$cWhite;
 		letter-spacing: 0.5px;
 		border-radius: 5px;
 	}

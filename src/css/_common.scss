@@ -1,11 +1,13 @@
 $cWhite: white;
 $cGreen: green;
-$cBlue: blue;
-$cBlack:black;
-$cDisplayColor:rgba(133, 124, 124, 0.842);
-$cRequireRed:#ed4545eb;
+$cBlue: #0039ffc7;
+$cBlack: black;
+$cDisplayColor: rgba(133, 124, 124, 0.842);
+$cRequireRed: #ed4545eb;
+$cTableHeader:#1506ecd7;
+$cUpdateButton:#00847F;
 
-@mixin button_color(){
+@mixin button_color() {
 	background-color: #16b;
 	background-image: linear-gradient(#2d8cec, #16b);
 	border-color: #16b #0b4075 #0b4075;
@@ -17,4 +19,21 @@ $cRequireRed:#ed4545eb;
 	font-size: 14px;
 	line-height: 21px;
 	padding: 4px 14px;
+	border-radius: 0.3em;
+}
+
+
+@mixin select_format() {
+	border: 2px solid $cBlue;
+	border-radius: 0.6em;
+	width: 17em;
+	height: 30px;
+}
+
+@mixin input_format() {
+	border: 2px solid $cBlue;
+	border-radius: 0.6em;
+	width: 16em;
+	height: 20px;
+	padding: 0.3em;
 }

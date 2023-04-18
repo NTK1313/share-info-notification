@@ -114,7 +114,10 @@ async function latestShare() {
 
 	// DB登録（非同期）
 	const ins003 = this.sqlNm[2];
-	fetch(INS_DB_DATA + '/' + ins003, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]));
+	await fetch(INS_DB_DATA + '/' + ins003, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).then(() => {
+		hc.remove('latest');
+		alert(LATEST_COMPLETE);
+	});
 
 	hc.remove('latest');
 	createTable(resultGetDb);

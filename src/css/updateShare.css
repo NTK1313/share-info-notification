@@ -21,6 +21,21 @@
   border-radius: 5px;
 }
 
+select {
+  border: 2px solid rgba(0, 57, 255, 0.7803921569);
+  border-radius: 0.6em;
+  width: 17em;
+  height: 30px;
+}
+
+input {
+  border: 2px solid rgba(0, 57, 255, 0.7803921569);
+  border-radius: 0.6em;
+  width: 16em;
+  height: 20px;
+  padding: 0.3em;
+}
+
 #tablebody th {
   background-color: rgba(21, 6, 236, 0.8431372549);
   color: white;
@@ -58,6 +73,7 @@
   font-size: 14px;
   line-height: 21px;
   padding: 4px 14px;
+  border-radius: 0.3em;
 }
 
 .select {
@@ -74,6 +90,7 @@
   font-size: 14px;
   line-height: 21px;
   padding: 4px 14px;
+  border-radius: 0.3em;
 }
 
 #register {
@@ -90,4 +107,5 @@
   font-size: 14px;
   line-height: 21px;
   padding: 4px 14px;
+  border-radius: 0.3em;
 }/*# sourceMappingURL=updateShare.css.map */
