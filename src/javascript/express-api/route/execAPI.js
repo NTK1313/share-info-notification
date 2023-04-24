@@ -30,14 +30,11 @@ async function call(codes, jpEn) {
 	// 配列分ループする（forEachはawait/asyncをサポートしていないので利用できない）
 	let results = [];
 	for (let i = 0; i < codes.length; i++) {
-		let code = codes[i];
-		if (jpEn == 'JP') {
-			code = code + '.T';
-		}
+		let code = enjp == 'JP' ? code + '.T' : codes[i];
 		// CMDコマンド:npx yahoo-finance2 quote 3092.T
-		// const query = 'TSLA';
-		// const queryOptions = { period1: '2023-04-01', period2:'2023-04-18'/*interval: '1mo'*/ };
-		// const result = await yahooFinance.historical(query, queryOptions);
+		const query = '3092.T';
+		const queryOptions = { period1: '2020-04-01', period2: '2020-04-18'/*interval: '1mo'*/ };
+		const result1 = await yahooFinance.historical(query, queryOptions);
 		let result = await yahooFinance.quote(code);
 		// regularMarketPrice:株価
 		// regularMarketChange:前日からの変動値

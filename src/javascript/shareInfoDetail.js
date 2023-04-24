@@ -53,10 +53,7 @@ async function getShareInfo() {
 	hc.add('latest');
 
 	// 実行SQLの選択
-	let selSql = 'SEL009_T_STOCK_JP';
-	if (enjp == EN) {
-		selSql = 'SEL010_T_STOCK_EN';
-	}
+	let selSql = enjp == JP ? 'SEL009_T_STOCK_JP' : 'SEL010_T_STOCK_EN';
 	const check = [{ 'brCd': brCd, 'dateStart': dateStart, 'dateEnd': dateEnd }];
 
 	const execChkDb = await fetch(CHK_DB_DATA + '/' + selSql, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
@@ -78,9 +75,8 @@ async function getShareInfo() {
 		let prices = [];
 		let days = [];
 		for (let key in resultChkDb) {
-			console.log(resultChkDb[key]['株価'].replace('\\', ''));
-			prices.push(resultChkDb[key]['株価'].replace('\\', ''));
-			console.log(resultChkDb[key]['処理日']);	// 処理日
+			const replacePrm = enjp == JP ? '\\' : '$';
+			prices.push(resultChkDb[key]['株価'].replace(replacePrm, ''));
 			days.push(resultChkDb[key]['処理日']);
 		}
 
@@ -89,12 +85,14 @@ async function getShareInfo() {
 		hc3.add('latest');
 		createGraph(prices, days);
 	}
-
 };
 
+/**
+ * グラフ作成
+ * @param {*} prices 価格の配列
+ * @param {*} days 日付の配列
+ */
 function createGraph(prices, days) {
-	// ボタンが押下されたタイミングでclass付与する
-
 	if (window.myGraph) {
 		myGraph.destroy();
 	}
@@ -103,7 +101,7 @@ function createGraph(prices, days) {
 		data: {
 			datasets: [{
 				data: prices,
-				label: '#share price',
+				label: '株価推移',
 				borderWidth: 1
 			}],
 			labels: days

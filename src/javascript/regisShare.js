@@ -51,17 +51,14 @@ async function regisInfo() {
 		return;
 	}
 	// 桁数チェック
-	if (enjp == JP &&  !regexp.test(brCd)) {
+	if (enjp == JP && !regexp.test(brCd)) {
 		alert(KETA_CHK_BR_CD);
 		return;
 	}
 
 	// DB重複チェック
 	const check = [{ 'brCd': brCd }];
-	let sqlNm1 = 'SEL003_M_STOCK_JP';
-	if (enjp == EN) {
-		sqlNm1 = 'SEL006_M_STOCK_EN';
-	}
+	let sqlNm1 = enjp == JP ? 'SEL003_M_STOCK_JP' : 'SEL006_M_STOCK_EN';
 	const execChkDb = await fetch(CHK_DB_DATA + '/' + sqlNm1, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
@@ -90,10 +87,7 @@ async function regisInfo() {
 
 	// API呼び出し、DB登録
 	// DB登録（非同期）
-	let sqlNm2 = 'INS002_M_STOCK_JP';
-	if (enjp == EN) {
-		sqlNm2 = 'INS004_M_STOCK_EN';
-	}
+	let sqlNm2 = enjp == JP ? 'INS002_M_STOCK_JP' : 'INS004_M_STOCK_EN';
 	// setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])
 	await fetch(INS_DB_DATA + '/' + sqlNm2, setApiDetail([METHOD_POST, APPLICATION_JSON, regisInfo])).catch(error => {
 		console.error(NETWORK_ERR, error);
