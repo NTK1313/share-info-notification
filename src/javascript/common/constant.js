@@ -1,5 +1,7 @@
 //共通利用する定数定義一覧
 const CLICK = 'click';
+const LOAD = 'load';
+const UNDEFINED = 'undefined';
 
 // 株式関連
 const JP = 'JP';
@@ -27,7 +29,7 @@ const GET_SHARE_INFO_JP = 'http://127.0.0.1:3000/api/v1/execAPI/shareInfo/JP';
 const GET_SHARE_INFO_EN = 'http://127.0.0.1:3000/api/v1/execAPI/shareInfo/EN';
 
 // メッセージ一覧
-const NETWORK_ERR ='通信に失敗しました';
+const NETWORK_ERR = '通信に失敗しました';
 const ALREADY_REGISTER_ALL = '以下の銘柄の最新情報がDB登録されているため一括登録処理は実施できません。';
 const ALREADY_REGISTER = '最新情報がDB登録されているため登録処理をスキップします。';
 const REGISTER_COMPLETE = 'DB登録完了しました。';
@@ -44,3 +46,5 @@ const SHARE_IS_NOT_REGISTOR = '株式が登録されていません。';
 const DELFLG_ERR = '削除フラグはON/OFFのいずれかを設定してください。';
 const SEGMENT_ERR_JP = '市場区分にはプライム、スタンダード、グロースのいずれかを設定してください。';
 const SEGMENT_ERR_EN = '市場区分にはNYSE、NASDAQのいずれかを設定してください。';
+const KIKAN_CHK_2M_OVER_ERR = '指定可能な範囲を超過しています。（最長２カ月まで）';
+const KIKAN_FUSEI_ERR = '期間指定が不正です。';

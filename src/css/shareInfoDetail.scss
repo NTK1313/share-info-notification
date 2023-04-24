@@ -1,0 +1,102 @@
+@use "common" as cmn;
+
+#head {
+	@include cmn.header_form();
+}
+
+#container {
+	.display {
+		color: cmn.$cDisplayColor;
+		font-size: 14px;
+		font-weight: bold;
+
+		&__require {
+			@include cmn.require_optional(cmn.$cRequireRed);
+		}
+
+		&__optional {
+			@include cmn.require_optional(cmn.$cOptional);
+		}
+
+		&__description {
+			color: cmn.$cDisplayColor;
+			font-size: 10px;
+			padding-top: 2px;
+			padding-bottom: 2px;
+			margin-top: 1px;
+			margin-bottom: 2px;
+		}
+
+		&__emphasis {
+			color: cmn.$cRed;
+			font-weight: bold;
+		}
+	}
+
+	.from_to {
+		padding-left: 20px;
+		padding-right: 14px;
+	}
+
+	select {
+		@include cmn.select_format();
+	}
+
+	input {
+		@include cmn.input_format();
+	}
+
+	.sharetable {
+		&.before {
+			display: none;
+		}
+
+		&.latest {
+			#tablebody {
+				th {
+					background-color: cmn.$cTableHeader;
+					color: cmn.$cWhite;
+					padding-left: 3px;
+					padding-right: 3px;
+				}
+
+				td {
+					padding-left: 3px;
+					padding-right: 3px;
+				}
+
+				button {
+					@include cmn.update_button();
+				}
+			}
+		}
+	}
+
+	.back {
+		cursor: pointer;
+		@include cmn.button_color();
+	}
+
+	.select {
+		cursor: pointer;
+		@include cmn.button_color();
+	}
+
+	#register {
+		cursor: pointer;
+		@include cmn.button_color();
+	}
+
+	.mycanvas {
+		&.before {
+			display: none;
+		}
+
+		&.latest {
+			display: block;
+			position: relative;
+			height: 40vh;
+			width: 40vw;
+		}
+	}
+}

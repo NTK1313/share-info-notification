@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>米国株式一覧</title>
-    <link rel="icon" href="../image/chart_icon.jpeg">
+	<link rel="icon" href="../image/chart_icon.jpeg">
 	<link rel="stylesheet" href="../css/shareInfoEn.css">
 	<link rel="stylesheet" href="../css/center_atom.css">
 	<link rel="stylesheet" href="../css/loader.css">
@@ -17,11 +17,8 @@
 <body>
 	<div id="container">
 		<br>
-		<br>
-		<br>
-		<br>
 		<div class="loader">
-			<table border="1">
+			<table class="sharetable before" border="1">
 				<tbody id="tablebody">
 				</tbody>
 			</table>
@@ -32,8 +29,9 @@
 		<button id="register" onclick="location.href='shareInfo.html'">日本株一覧</button>
 		<button id="register" onclick="location.href='regisShare.html'">銘柄登録</button>
 		<button id="register" onclick="location.href='updateShare.html'">銘柄更新</button>
+		<button id="register" onclick="location.href='shareInfoDetail.html'">銘柄情報詳細</button>
 		<script src="../javascript/common/constant.js"></script>
-		<script src="../javascript/common/apiCommon.js"></script>
+		<script src="../javascript/common/jsCommon.js"></script>
 		<script src="../javascript/common/htmlCommon.js"></script>
 		<script src="../javascript/createTable.js"></script>
 		<script src="../javascript/shareInfoEn.js"></script>

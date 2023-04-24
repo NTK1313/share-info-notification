@@ -1,0 +1,140 @@
+#head {
+  text-align: left;
+  color: white;
+  background-color: green;
+  width: 100%;
+  height: 70px;
+  position: relative;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+#container .display {
+  color: rgba(133, 124, 124, 0.842);
+  font-size: 14px;
+  font-weight: bold;
+}
+#container .display__require {
+  font-size: 12px;
+  color: white;
+  padding: 0px 10px;
+  background: rgba(237, 69, 69, 0.9215686275);
+  border-radius: 5px;
+}
+#container .display__optional {
+  font-size: 12px;
+  color: white;
+  padding: 0px 10px;
+  background: rgba(133, 124, 124, 0.842);
+  border-radius: 5px;
+}
+#container .display__description {
+  color: rgba(133, 124, 124, 0.842);
+  font-size: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-top: 1px;
+  margin-bottom: 2px;
+}
+#container .display__emphasis {
+  color: #ff1800;
+  font-weight: bold;
+}
+#container .from_to {
+  padding-left: 20px;
+  padding-right: 14px;
+}
+#container select {
+  border: 2px solid rgba(0, 57, 255, 0.7803921569);
+  border-radius: 0.6em;
+  width: 17em;
+  height: 30px;
+}
+#container input {
+  border: 2px solid rgba(0, 57, 255, 0.7803921569);
+  border-radius: 0.6em;
+  width: 16em;
+  height: 20px;
+  padding: 0.3em;
+}
+#container .sharetable.before {
+  display: none;
+}
+#container .sharetable.latest #tablebody th {
+  background-color: rgba(21, 6, 236, 0.8431372549);
+  color: white;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+#container .sharetable.latest #tablebody td {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+#container .sharetable.latest #tablebody button {
+  border: 1px solid #00847F;
+  color: #00847F;
+  background-color: white;
+  letter-spacing: 0.5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#container .back {
+  cursor: pointer;
+  background-color: #16b;
+  background-image: linear-gradient(#2d8cec, #16b);
+  border-color: #16b #0b4075 #0b4075;
+  -o-border-image: none;
+     border-image: none;
+  border-style: solid;
+  border-width: 1px;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  line-height: 21px;
+  padding: 4px 14px;
+  border-radius: 0.3em;
+  cursor: pointer;
+}
+#container .select {
+  cursor: pointer;
+  background-color: #16b;
+  background-image: linear-gradient(#2d8cec, #16b);
+  border-color: #16b #0b4075 #0b4075;
+  -o-border-image: none;
+     border-image: none;
+  border-style: solid;
+  border-width: 1px;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  line-height: 21px;
+  padding: 4px 14px;
+  border-radius: 0.3em;
+  cursor: pointer;
+}
+#container #register {
+  cursor: pointer;
+  background-color: #16b;
+  background-image: linear-gradient(#2d8cec, #16b);
+  border-color: #16b #0b4075 #0b4075;
+  -o-border-image: none;
+     border-image: none;
+  border-style: solid;
+  border-width: 1px;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  line-height: 21px;
+  padding: 4px 14px;
+  border-radius: 0.3em;
+  cursor: pointer;
+}
+#container .mycanvas.before {
+  display: none;
+}
+#container .mycanvas.latest {
+  /* display: block; */
+  position: relative;
+  height: 40vh;
+  width: 40vw;
+}/*# sourceMappingURL=shareInfoDetail.css.map */

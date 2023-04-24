@@ -54,7 +54,16 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 		const uniqueTimes = Array.from(new Map(times.map((value) => [value])));
 		v.push(uniquCodes);
 		v.push(uniqueTimes);
-	} else {
+	} else if (sqlstr == 'SEL009_T_STOCK_JP.sql' || sqlstr == 'SEL010_T_STOCK_EN.sql') {
+		// 銘柄情報詳細
+		const code = reqstr[0]['brCd'];
+		const dateStart = reqstr[0]['dateStart'];
+		const dateEnd = reqstr[0]['dateEnd'];
+		v.push(code);
+		v.push(dateStart);
+		v.push(dateEnd);
+	}
+	else {
 		// 銘柄登録、銘柄更新
 		const code = reqstr[0]['brCd'];
 		v.push(code);

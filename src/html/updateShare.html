@@ -17,9 +17,6 @@
 
 <body>
     <div id="container">
-        <br>
-        <br>
-        <br>
         <form name="login_form">
             <p>更新したい銘柄を入力してください。</p>
             <div>
@@ -44,7 +41,7 @@
                 <br>
             </div>
             <div class="loader">
-                <table border="1">
+                <table class="sharetable before" border="1">
                     <tbody id="tablebody">
                     </tbody>
                 </table>
@@ -55,8 +52,9 @@
         <button class="back" onclick="location.href='shareInfo.html'">日本株一覧画面に戻る</button>
         <button class="back" onclick="location.href='shareInfoEn.html'">米国株一覧画面に戻る</button>
         <button id="register" onclick="location.href='regisShare.html'">銘柄登録</button>
+        <button id="register" onclick="location.href='shareInfoDetail.html'">銘柄情報詳細</button>
         <script src="../javascript/common/constant.js"></script>
-        <script src="../javascript/common/apiCommon.js"></script>
+        <script src="../javascript/common/jsCommon.js"></script>
         <script src="../javascript/common/htmlCommon.js"></script>
         <script src="../javascript/createTable.js"></script>
         <script src="../javascript/updateShare.js"></script>

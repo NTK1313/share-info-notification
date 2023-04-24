@@ -1,48 +1,43 @@
 @use "common" as cmn;
 
 #head {
-	text-align: left;
-	color: cmn.$cWhite;
-	background-color: cmn.$cGreen;
-	width: 100%;
-	height: 70px;
-	position: fixed;
+	@include cmn.header_form();
 }
 
-#tablebody {
-	th {
-		background-color: cmn.$cTableHeader;
-		color: cmn.$cWhite;
-		padding-left: 3px;
-		padding-right: 3px;
+.sharetable {
+	&.before {
+		display: none;
 	}
 
-	td {
-		padding-left: 3px;
-		padding-right: 3px;
-	}
+	&.latest {
+		#tablebody {
+			th {
+				background-color: cmn.$cTableHeader;
+				color: cmn.$cWhite;
+				padding-left: 3px;
+				padding-right: 3px;
+			}
 
-	button {
-		cursor: pointer;
-		border: 1px solid cmn.$cUpdateButton;
-		color: cmn.$cUpdateButton;
-		background-color:cmn.$cWhite;
-		letter-spacing: 0.5px;
-		border-radius: 5px;
+			td {
+				padding-left: 3px;
+				padding-right: 3px;
+			}
+
+			button {
+				@include cmn.update_button();
+			}
+		}
 	}
 }
 
 #btnEn1 {
-	cursor: pointer;
 	@include cmn.button_color();
 }
 
 #btnEn2 {
-	cursor: pointer;
 	@include cmn.button_color();
 }
 
 #register {
-	cursor: pointer;
 	@include cmn.button_color();
 }

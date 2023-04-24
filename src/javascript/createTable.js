@@ -1,36 +1,39 @@
 // 画面に表示する表作成
-function createTable(result) {
-	const ta = new DesignTableCreate(result);
+function createTable(result,updFlg) {
+	const ta = new DesignTableCreate(result,updFlg);
 	ta.animate();
 }
 
 // 画面に表示する表作成
-function createInputTextTable(result) {
-	new InputTextTableCreate(result);
+function createInputTextTable(result,updFlg) {
+	new InputTextTableCreate(result,updFlg);
 }
 
 /**
  * データ表作成＆カラーリング
  */
 class TableCreate {
-	constructor(result) {
+	constructor(result,updFlg) {
 		this.DOM = {};
 		this.DOM.table = document.querySelector('#tablebody');
 		// ヘッダ作成
 		this.result = result;
+		this.updFlg = updFlg;
 		const share = result[0];
 		const keyList = Object.keys(share);
 		let data = keyList.reduce((acc, curr) => {
 			return `${acc}<th>${curr}</th>`;
 		}, '');
-		data += '<th>更新</th>';
+		if(this.updFlg){
+			data += '<th>更新</th>';
+		}
 		this.DOM.table.innerHTML = data;
 	}
 }
 
 class DesignTableCreate extends TableCreate {
-	constructor(result) {
-		super(result);
+	constructor(result,updFlg) {
+		super(result,updFlg);
 		// ボディ作成
 		this.DOM.table.innerHTML += this._makeBody();
 		this.DOM.tr = document.querySelectorAll('tr');
@@ -44,8 +47,10 @@ class DesignTableCreate extends TableCreate {
 			let edit = valueList.reduce((acc1, curr1) => {
 				return `${acc1}<td>${curr1}</td>`;
 			}, '');
+			if(this.updFlg){
 			// 更新ボタン付与(ボタン押下時にイベント設定)
 			edit += `<td><button id="${code}"  onclick="update(this)">更新</button></td>`;
+			}
 			// 1レコードずつ編集
 			return `${acc}<tr>${edit}</tr>`;
 		}, '');
@@ -64,8 +69,8 @@ class DesignTableCreate extends TableCreate {
 }
 
 class InputTextTableCreate extends TableCreate {
-	constructor(result) {
-		super(result);
+	constructor(result,updFlg) {
+		super(result,updFlg);
 		// ボディ作成
 		this.DOM.table.innerHTML += this._makeBody();
 		this.DOM.tr = document.querySelectorAll('tr');

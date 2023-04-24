@@ -49,7 +49,10 @@ async function getShareInfo() {
 	if (resultChkDb.length == 0) {
 		alert(SHARE_IS_NOT_REGISTOR);
 	} else {
-		createInputTextTable(resultChkDb);
+		const hc2 = new EditHtmlClass('.sharetable');
+		hc2.remove('before');
+		hc2.add('latest');
+		createInputTextTable(resultChkDb,true);
 	}
 };
 

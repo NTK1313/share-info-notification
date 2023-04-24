@@ -26,7 +26,10 @@ async function getShareInfo() {
 	*/
 	const resultGetDb = await execGetDb.json();
 	hc.remove('latest');
-	createTable(resultGetDb);
+	const hc2 = new EditHtmlClass('.sharetable');
+	hc2.remove('before');
+	hc2.add('latest');
+	createTable(resultGetDb, true);
 };
 
 /**
@@ -98,6 +101,8 @@ async function latestShare() {
 	});
 	const resultChkDb = await execChkDb.json();
 
+	const hc2 = new EditHtmlClass('.sharetable');
+
 	// 既に最新データが登録されている場合は後続処理スキップ
 	if (resultChkDb.length > 0) {
 		const codeInfo = resultChkDb.map(function (value) {
@@ -107,7 +112,9 @@ async function latestShare() {
 			return `${acc}\n${curr}`;
 		}, '\n');
 		hc.remove('latest');
-		createTable(resultGetDb);
+		hc2.remove('before');
+		hc2.add('latest');
+		createTable(resultGetDb, true);
 		alert(ALREADY_REGISTER_ALL + data);
 		return;
 	}
@@ -120,7 +127,9 @@ async function latestShare() {
 	});
 
 	hc.remove('latest');
-	createTable(resultGetDb);
+	hc2.remove('before');
+	hc2.add('latest');
+	createTable(resultGetDb, true);
 }
 
 /**

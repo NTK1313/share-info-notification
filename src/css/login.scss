@@ -1,12 +1,7 @@
 @use "common" as cmn;
 
 #head {
-	text-align: center;
-	color: cmn.$cWhite;
-	background-color: cmn.$cGreen;
-	width: 100%;
-	height: 70px;
-	position: fixed;
+	@include cmn.header_form();
 }
 
 #container {

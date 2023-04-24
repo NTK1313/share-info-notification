@@ -1,11 +1,28 @@
 $cWhite: white;
 $cGreen: green;
 $cBlue: #0039ffc7;
+$cRed:#ff1800;
 $cBlack: black;
 $cDisplayColor: rgba(133, 124, 124, 0.842);
 $cRequireRed: #ed4545eb;
-$cTableHeader:#1506ecd7;
-$cUpdateButton:#00847F;
+$cOptional: rgba(133, 124, 124, 0.842);
+$cTableHeader: #1506ecd7;
+$cUpdateButton: #00847F;
+
+@mixin header_form() {
+	text-align: left;
+	color: $cWhite;
+	background-color: $cGreen;
+	width: 100%;
+	height: 70px;
+	position: relative;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+
+@mixin button_setting() {
+	cursor: pointer;
+}
 
 @mixin button_color() {
 	background-color: #16b;
@@ -20,8 +37,25 @@ $cUpdateButton:#00847F;
 	line-height: 21px;
 	padding: 4px 14px;
 	border-radius: 0.3em;
+	@include button_setting();
 }
 
+@mixin update_button() {
+	border: 1px solid $cUpdateButton;
+	color: $cUpdateButton;
+	background-color: $cWhite;
+	letter-spacing: 0.5px;
+	border-radius: 5px;
+	@include button_setting();
+}
+
+@mixin require_optional($requireOptional) {
+	font-size: 12px;
+	color: $cWhite;
+	padding: 0px 10px;
+	background: $requireOptional;
+	border-radius: 5px;
+}
 
 @mixin select_format() {
 	border: 2px solid $cBlue;
