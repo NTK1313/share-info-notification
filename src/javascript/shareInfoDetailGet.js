@@ -9,27 +9,23 @@
  * DB検索
  */
 async function getShareInfo() {
-	// 入力値チェック
 	const enjp = document.querySelector('#enjp').value;
 	const brCd = document.querySelector('#brCd').value;
 	let ymdStart = document.querySelector('.ymdStart').value;
 	let ymdEnd = document.querySelector('.ymdEnd').value;
 	const regexp = new RegExp('[0-9]{4}');
 
-	// 必須チェック
+	// 入力値チェック
 	if (requireChk(brCd, REQUIRE_BR_CD)) {
 		return;
 	}
-	// 区分チェック
 	if (requireChk(enjp, REQUIRE_SHARE_KBN)) {
 		return;
 	}
-	// 桁数チェック
 	if (!regexp.test(brCd) && enjp == JP) {
 		alert(KETA_CHK_BR_CD);
 		return;
 	}
-	// 期間指定チェック
 	if (requireChk(ymdStart, REQUIRE_KIKAN)) {
 		return;
 	} else if (requireChk(ymdEnd, REQUIRE_KIKAN)) {

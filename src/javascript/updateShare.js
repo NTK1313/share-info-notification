@@ -2,18 +2,17 @@
  * DB検索
  */
 async function getShareInfo() {
-	// 入力値チェック
 	const enjp = document.querySelector('#enjp').value;
 	const brCd = document.querySelector('#brCd').value;
 	const regexp = new RegExp('[0-9]{4}');
-	if (brCd == '') {
-		alert(REQUIRE_BR_CD);
-		return;
-	} else if (enjp == '') {
-		alert(REQUIRE_SHARE_KBN);
+
+	// 入力値チェック
+	if (requireChk(brCd, REQUIRE_BR_CD)) {
 		return;
 	}
-	// 桁数チェック
+	if (requireChk(enjp, REQUIRE_SHARE_KBN)) {
+		return;
+	}
 	if (!regexp.test(brCd) && enjp == JP) {
 		alert(KETA_CHK_BR_CD);
 		return;
@@ -22,10 +21,7 @@ async function getShareInfo() {
 	hc.add('latest');
 
 	// 実行SQLの選択
-	let selSql = 'SEL007_M_STOCK_JP';
-	if (enjp == EN) {
-		selSql = 'SEL008_M_STOCK_EN';
-	}
+	let selSql = enjp == JP ? 'SEL007_M_STOCK_JP':'SEL008_M_STOCK_EN';
 	const check = [{ 'brCd': brCd }];
 
 	const execChkDb = await fetch(CHK_DB_DATA + '?' + SQL_NM + '=' + selSql, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {

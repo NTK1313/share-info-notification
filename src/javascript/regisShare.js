@@ -40,17 +40,15 @@ async function regisInfo() {
 	const regexp = new RegExp('^[1-9][0-9]{3}$');
 
 	// 入力値チェック
-	if (brCd.length == 0) {
-		alert(REQUIRE_BR_CD);
-		return;
-	} else if (brNm.length == 0) {
-		alert(REQUIRE_BR_NM);
-		return;
-	} else if (segment.length == 0) {
-		alert(REQUIRE_SEGMENT);
+	if (requireChk(brCd, REQUIRE_BR_CD)) {
 		return;
 	}
-	// 桁数チェック
+	if (requireChk(brNm, REQUIRE_BR_NM)) {
+		return;
+	}
+	if (requireChk(segment, REQUIRE_SEGMENT)) {
+		return;
+	}
 	if (enjp == JP && !regexp.test(brCd)) {
 		alert(KETA_CHK_BR_CD);
 		return;
