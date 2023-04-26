@@ -3,16 +3,19 @@ const router = express.Router();
 let { Client } = require('../../../node-npm/node_modules/pg/lib');
 const f = require('./execSql.js');
 
+// 定数一覧
+const sqlNm = 'sqlNm';
+
 // TODO:/getPriceの処理のように非同期させればDB接続を共通化出来そう。
 
 /**
  * DB検索
  * http://localhost:3000/api/v1/crudDB/getDBData
  */
-router.get('/getDBData/:sqlNm', function (req, res) {
+router.get('/getDBData', function (req, res) {
 	// SQL実行
 	const client = new connectDB();
-	const sel001 = f.sqlReader(req.params.sqlNm + '.sql');
+	const sel001 = f.sqlReader(req.query[sqlNm] + '.sql');
 
 	// // クエリ実行は非同期処理なので、後続処理はコールバック関数として書く
 	client.query(sel001, (err, res2) => {
@@ -34,11 +37,10 @@ router.get('/getDBData/:sqlNm', function (req, res) {
  * DBチェック
  * http://localhost:3000/api/v1/crudDB/checkDBData
  */
-router.post('/checkDBData/:sqlNm', function (req1, res1) {
+router.post('/checkDBData', function (req1, res1) {
 	const client = new connectDB();
-	// URL
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const sqlstr = req1.params.sqlNm + '.sql'
+	const sqlstr = req1.query[sqlNm] + '.sql';
 	const sql = f.sqlReader(sqlstr);
 	let v = [];
 	if (sqlstr == 'SEL002_T_STOCK_JP.sql' || sqlstr == 'SEL005_T_STOCK_EN.sql') {
@@ -57,14 +59,14 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
 	} else if (sqlstr == 'SEL009_T_STOCK_JP.sql' || sqlstr == 'SEL010_T_STOCK_EN.sql') {
 		// 銘柄情報詳細
 		const code = reqstr[0]['brCd'];
-		const dateStart = reqstr[0]['dateStart'];
-		const dateEnd = reqstr[0]['dateEnd'];
+		const ymdStart = reqstr[0]['ymdStart'];
+		const ymdEnd = reqstr[0]['ymdEnd'];
 		v.push(code);
-		v.push(dateStart);
-		v.push(dateEnd);
+		v.push(ymdStart);
+		v.push(ymdEnd);
 	}
 	else {
-		// 銘柄登録、銘柄更新
+		// 銘柄登録、銘柄更新、銘柄詳細情報
 		const code = reqstr[0]['brCd'];
 		v.push(code);
 	}
@@ -92,10 +94,10 @@ router.post('/checkDBData/:sqlNm', function (req1, res1) {
  * DB登録
  * http://localhost:3000/api/v1/crudDB/insertDBData
  */
-router.post('/insertDBData/:sqlNm', function (req1, res1) {
+router.post('/insertDBData', function (req1, res1) {
 	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const sql = f.sqlReader(req1.params.sqlNm + '.sql');
+	const sql = f.sqlReader(req1.query[sqlNm] + '.sql');
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
@@ -130,11 +132,11 @@ router.post('/insertDBData/:sqlNm', function (req1, res1) {
  * DB更新
  * http://localhost:3000/api/v1/crudDB/updateDBData
  */
-router.post('/updateDBData/:sqlNm', function (req1, res1) {
+router.post('/updateDBData', function (req1, res1) {
 	const client = new connectDB();
 	// 更新は1件ずつ行う想定
 	const reqstr = JSON.parse(JSON.stringify(req1.body))[0];
-	const sql = f.sqlReader(req1.params.sqlNm + '.sql');
+	const sql = f.sqlReader(req1.query[sqlNm] + '.sql');
 
 	let keyList = Object.keys(reqstr);
 	let query = {

@@ -5,16 +5,16 @@ async function getShareInfo() {
 	// 入力値チェック
 	const enjp = document.querySelector('#enjp').value;
 	const brCd = document.querySelector('#brCd').value;
-	let dateStart = document.querySelector('.dateStart').value;
-	const dateEnd = document.querySelector('.dateEnd').value.length == 0 ? editDate() : document.querySelector('.dateEnd').value;
+	let ymdStart = document.querySelector('.ymdStart').value;
+	const ymdEnd = document.querySelector('.ymdEnd').value.length == 0 ? editDate() : document.querySelector('.ymdEnd').value;
 	const regexp = new RegExp('[0-9]{4}');
 
 	// 必須チェック
-	if (brCd == '') {
-		alert(REQUIRE_BR_CD);
+	if (requireChk(brCd, REQUIRE_BR_CD)) {
 		return;
-	} else if (enjp == '') {
-		alert(REQUIRE_SHARE_KBN);
+	}
+	// 区分チェック
+	if (requireChk(enjp, REQUIRE_SHARE_KBN)) {
 		return;
 	}
 	// 桁数チェック
@@ -23,27 +23,23 @@ async function getShareInfo() {
 		return;
 	}
 
-	if (dateStart.length == 0) {
+	if (ymdStart.length == 0) {
 		// デフォルトの開始日時(1週間前)を設定
 		const param = { date: -7 };
-		dateStart = editDate(param);
+		ymdStart = editDate(param);
 	} else {
-		let sysStartDate = new Date(dateStart.substring(0, 4), dateStart.substring(5, 7) - 1, dateStart.substring(8, 10));
-		let sysEndDate = new Date(dateEnd.substring(0, 4), dateEnd.substring(5, 7) - 1, dateEnd.substring(8, 10));
-
 		// 日付不正チェック
-		let fuseiChk = compareDate(sysStartDate, sysEndDate, 'P');
-		if (!fuseiChk) {
+		let sysStartDate = new Date(ymdStart.substring(0, 4), ymdStart.substring(5, 7) - 1, ymdStart.substring(8, 10));
+		let sysEndDate = new Date(ymdEnd.substring(0, 4), ymdEnd.substring(5, 7) - 1, ymdEnd.substring(8, 10));
+		if (!compareDate(sysStartDate, sysEndDate, 'P')) {
 			alert(KIKAN_FUSEI_ERR);
 			return;
 		}
 
-		// 現在日付から２カ月前
-		let sysChkDate = new Date(dateEnd.substring(0, 4), dateEnd.substring(5, 7) - 3, dateEnd.substring(8, 10));
-
 		// 日付の範囲チェック
-		let ChokaChk = compareDate(sysStartDate, sysChkDate, 'F');
-		if (!ChokaChk) {
+		// 現在日付から２カ月前
+		let sysChkDate = new Date(ymdEnd.substring(0, 4), ymdEnd.substring(5, 7) - 3, ymdEnd.substring(8, 10));
+		if (!compareDate(sysStartDate, sysChkDate, 'F')) {
 			alert(KIKAN_CHK_2M_OVER_ERR);
 			return;
 		}
@@ -54,9 +50,9 @@ async function getShareInfo() {
 
 	// 実行SQLの選択
 	let selSql = enjp == JP ? 'SEL009_T_STOCK_JP' : 'SEL010_T_STOCK_EN';
-	const check = [{ 'brCd': brCd, 'dateStart': dateStart, 'dateEnd': dateEnd }];
+	const check = [{ 'brCd': brCd, 'ymdStart': ymdStart, 'ymdEnd': ymdEnd }];
 
-	const execChkDb = await fetch(CHK_DB_DATA + '/' + selSql, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '?' + SQL_NM + '=' + selSql, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		hc.remove('latest');
 		alert(NETWORK_ERR);
@@ -125,6 +121,6 @@ function createGraph(prices, days) {
 select.addEventListener(CLICK, getShareInfo);
 
 window.addEventListener(LOAD, function () {
-	let dateEnd = document.querySelector('.dateEnd');
-	dateEnd.value = editDate();
+	let ymdEnd = document.querySelector('.ymdEnd');
+	ymdEnd.value = editDate();
 });

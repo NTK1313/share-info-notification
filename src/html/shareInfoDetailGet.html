@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>銘柄情報詳細</title>
+    <title>銘柄情報詳細取得</title>
     <link rel="icon" href="../image/chart_icon.jpeg">
-    <link rel="stylesheet" href="../css/shareInfoDetail.css">
+    <link rel="stylesheet" href="../css/shareInfoDetailGet.css">
     <link rel="stylesheet" href="../css/loader.css">
     <link rel="stylesheet" href="../css/center_atom.css">
     <script src="../javascript/common/pace.js"></script>
@@ -13,13 +13,13 @@
 </head>
 
 <header id="head">
-    <h1>銘柄情報詳細</h1>
+    <h1>銘柄情報詳細取得</h1>
 </header>
 
 <body>
     <div id="container">
         <form name="update_form">
-            <p>詳細を確認したい銘柄を入力してください。</p>
+            <p>詳細情報を取得したい銘柄を入力してください。</p>
             <div>
                 <div>
                     <span class="display">株式区分</span>
@@ -42,11 +42,11 @@
                 <br>
                 <div>
                     <div>
-                        <span class="display">検索期間</span>
-                        <span class="display__optional">任意</span>
+                        <span class="display">取得対象期間</span>
+                        <span class="display__require">必須</span>
                         <br>
-                        <p class="display__description">未設定の場合は直近1週間のデータを表示<br>期間は
-                            <span class="display__emphasis">最長２カ月まで</span>
+                        <p class="display__description">取得したい期間を設定してください。<br>指定可能な範囲は
+                            <span class="display__emphasis">最長１カ月間</span>
                         </p>
                     </div>
                     <input type="date" class="ymdStart"><span class="from_to">～</span>
@@ -54,29 +54,19 @@
                 </div>
                 <br>
             </div>
-            <div class="mycanvas before">
-                <canvas id="mycanvas__graph"></canvas>
-            </div>
-            <div class="loader">
-                <table class="sharetable before" border="1">
-                    <tbody id="tablebody">
-                    </tbody>
-                </table>
-                <br>
-            </div>
         </form>
-        <button id="select" class="select">検索</button>
+        <button id="select" class="select">取得</button>
         <button class="back" onclick="location.href='shareInfo.html'">日本株一覧</button>
         <button class="back" onclick="location.href='shareInfoEn.html'">米国株一覧</button>
         <button id="register" onclick="location.href='regisShare.html'">銘柄登録</button>
         <button id="register" onclick="location.href='updateShare.html'">銘柄更新</button>
-        <button id="register" onclick="location.href='shareInfoDetailGet.html'">銘柄情報詳細取得</button>
+        <button id="register" onclick="location.href='shareInfoDetail.html'">銘柄情報詳細</button>
     </div>
     <script src="../javascript/common/constant.js"></script>
     <script src="../javascript/common/jsCommon.js"></script>
     <script src="../javascript/common/htmlCommon.js"></script>
     <script src="../javascript/createTable.js"></script>
-    <script src="../javascript/shareInfoDetail.js"></script>
+    <script src="../javascript/shareInfoDetailGet.js"></script>
 </body>
 
 </html>

@@ -28,7 +28,7 @@ async function getShareInfo() {
 	}
 	const check = [{ 'brCd': brCd }];
 
-	const execChkDb = await fetch(CHK_DB_DATA + '/' + selSql, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '?' + SQL_NM + '=' + selSql, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		hc.remove('latest');
 		alert(NETWORK_ERR);
@@ -127,7 +127,7 @@ async function update(value) {
 	elements.push(element);
 	// 実行SQL
 	const updSql = enjp == 'JP' ? 'UPD001_M_STOCK_JP' : 'UPD002_M_STOCK_EN';
-	await fetch(UPD_DB_DATA + '/' + updSql, setApiDetail([METHOD_POST, APPLICATION_JSON, elements])).catch(() => {
+	await fetch(UPD_DB_DATA + '?' + SQL_NM + '=' + updSql, setApiDetail([METHOD_POST, APPLICATION_JSON, elements])).catch(() => {
 		// TODO:サーバ側でも処理が成功するのになぜかcatchに入ってしまうので調査必要。
 		alert(UPDATE_COMPLETE);
 	});

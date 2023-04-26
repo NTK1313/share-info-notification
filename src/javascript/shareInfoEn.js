@@ -7,7 +7,7 @@ const latestSharePrm = ['SEL004_M_STOCK_EN', 'SEL005_T_STOCK_EN', 'INS003_T_STOC
 async function getShareInfo() {
 	const hc = new EditHtmlClass('.loader');
 	hc.add('latest');
-	const execGetDb = await fetch(GET_DB_DATA + '/' + this.sqlNm).catch(error => {
+	const execGetDb = await fetch(GET_DB_DATA + '?' + SQL_NM + '=' + this.sqlNm).catch(error => {
 		console.error(NETWORK_ERR, error);
 		hc.remove('latest');
 		alert(NETWORK_ERR);
@@ -41,7 +41,7 @@ async function latestShare() {
 	hc.add('latest');
 
 	const sel004 = this.sqlNm[0];
-	const execGetDb = await fetch(GET_DB_DATA + '/' + sel004).catch(error => {
+	const execGetDb = await fetch(GET_DB_DATA + '?' + SQL_NM + '=' + sel004).catch(error => {
 		console.error(NETWORK_ERR, error);
 		hc.remove('latest');
 		alert(NETWORK_ERR);
@@ -62,7 +62,7 @@ async function latestShare() {
 	const resultGetDb = await execGetDb.json();
 
 	// YahooFinanceAPIを実行する。
-	const execGetShareInfo = await fetch(GET_SHARE_INFO_EN, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
+	const execGetShareInfo = await fetch(GET_SHARE_INFO_EN + '?' + EXEC_API + '=' + QUOTE, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		hc.remove('latest');
 		alert(NETWORK_ERR);
@@ -93,7 +93,7 @@ async function latestShare() {
 
 	// DB登録前のチェック
 	const sel005 = this.sqlNm[1];
-	const execChkDb = await fetch(CHK_DB_DATA + '/' + sel005, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '?' + SQL_NM + '=' + sel005, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		hc.remove('latest');
 		alert(NETWORK_ERR);
@@ -121,7 +121,7 @@ async function latestShare() {
 
 	// DB登録（非同期）
 	const ins003 = this.sqlNm[2];
-	await fetch(INS_DB_DATA + '/' + ins003, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).then(() => {
+	await fetch(INS_DB_DATA + '?' + SQL_NM + '=' + ins003, setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).then(() => {
 		hc.remove('latest');
 		alert(LATEST_COMPLETE);
 	});
@@ -143,7 +143,7 @@ async function update(value) {
 
 	// YahooFinanceAPIを実行する。
 	// JSONイメージ [{"銘柄コード": PG}]
-	const execGetShareInfo = await fetch(GET_SHARE_INFO_EN, setApiDetail([METHOD_POST, APPLICATION_JSON, body])).catch(error => {
+	const execGetShareInfo = await fetch(GET_SHARE_INFO_EN + '?' + EXEC_API + '=' + QUOTE, setApiDetail([METHOD_POST, APPLICATION_JSON, body])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -151,7 +151,7 @@ async function update(value) {
 	const resultGetShareInfo = await execGetShareInfo.json();
 
 	// DB登録チェック
-	const execChkDb = await fetch(CHK_DB_DATA + '/' + 'SEL005_T_STOCK_EN', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '?' + SQL_NM + '=' + 'SEL005_T_STOCK_EN', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -165,7 +165,7 @@ async function update(value) {
 	}
 
 	// DB登録
-	await fetch(INS_DB_DATA + '/' + 'INS003_T_STOCK_EN', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]).then(() => {
+	await fetch(INS_DB_DATA + '?' + SQL_NM + '=' + 'INS003_T_STOCK_EN', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]).then(() => {
 		hc.remove('latest');
 		alert(LATEST_COMPLETE);
 	}));

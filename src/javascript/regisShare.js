@@ -59,7 +59,7 @@ async function regisInfo() {
 	// DB重複チェック
 	const check = [{ 'brCd': brCd }];
 	let sqlNm1 = enjp == JP ? 'SEL003_M_STOCK_JP' : 'SEL006_M_STOCK_EN';
-	const execChkDb = await fetch(CHK_DB_DATA + '/' + sqlNm1, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
+	const execChkDb = await fetch(CHK_DB_DATA + '?' + SQL_NM + '=' + sqlNm1, setApiDetail([METHOD_POST, APPLICATION_JSON, check])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;
@@ -89,7 +89,7 @@ async function regisInfo() {
 	// DB登録（非同期）
 	let sqlNm2 = enjp == JP ? 'INS002_M_STOCK_JP' : 'INS004_M_STOCK_EN';
 	// setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetDb])
-	await fetch(INS_DB_DATA + '/' + sqlNm2, setApiDetail([METHOD_POST, APPLICATION_JSON, regisInfo])).catch(error => {
+	await fetch(INS_DB_DATA + '?' + SQL_NM + '=' + sqlNm2, setApiDetail([METHOD_POST, APPLICATION_JSON, regisInfo])).catch(error => {
 		console.error(NETWORK_ERR, error);
 		alert(NETWORK_ERR);
 		return;

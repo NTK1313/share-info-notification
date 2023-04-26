@@ -22,7 +22,7 @@ function editDate(param) {
 	let editYear;
 	let editMonth;
 	let editDate;
-	if (typeof param !== UNDEFINED) {
+	if (typeof param !== 'undefined') {
 		if (param['year']) {
 			editYear = param['year'];
 		}
@@ -70,4 +70,18 @@ function compareDate(cpr1, cpr2, kbn) {
 		chk = cpr1.getTime() > cpr2.getTime();
 	}
 	return chk;
+}
+
+/**
+ * 必須項目チェック
+ * @param {*} target チェック対象
+ * @param {*} message エラー時に出力するメッセージ
+ */
+function requireChk(target, message) {
+	let chkErr = false;
+	if (target == '') {
+		chkErr = true;
+		alert(message);
+	}
+	return chkErr;
 }

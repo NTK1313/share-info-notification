@@ -1,7 +1,8 @@
 //共通利用する定数定義一覧
 const CLICK = 'click';
 const LOAD = 'load';
-const UNDEFINED = 'undefined';
+const SQL_NM = 'sqlNm';
+const EXEC_API = 'execApi';
 
 // 株式関連
 const JP = 'JP';
@@ -11,6 +12,8 @@ const NASDAQ = 'NASDAQ';
 const PRIME = 'プライム';
 const STANDARD = 'スタンダード';
 const GROWTH = 'グロース';
+const QUOTE = 'quote';
+const HISTORICAL = 'historical';
 
 // API設定用
 const METHOD_GET = 'GET';
@@ -39,6 +42,7 @@ const DUPLICATE_BR_CD = '既に同一銘柄コードが登録されているた�
 const REQUIRE_BR_CD = '銘柄コードは必須項目です';
 const REQUIRE_BR_NM = '企業名は必須項目です';
 const REQUIRE_SEGMENT = '市場区分は必須項目です';
+const REQUIRE_KIKAN = '取得対象期間は必須項目です';
 const KETA_CHK_BR_CD = '銘柄コードは4桁の数値で入力してください';
 const PREASE_SELECT = '選択してください';
 const REQUIRE_SHARE_KBN = '株式が選択されていません。';
@@ -46,5 +50,7 @@ const SHARE_IS_NOT_REGISTOR = '株式が登録されていません。';
 const DELFLG_ERR = '削除フラグはON/OFFのいずれかを設定してください。';
 const SEGMENT_ERR_JP = '市場区分にはプライム、スタンダード、グロースのいずれかを設定してください。';
 const SEGMENT_ERR_EN = '市場区分にはNYSE、NASDAQのいずれかを設定してください。';
+const KIKAN_CHK_1M_OVER_ERR = '指定可能な範囲を超過しています。（最長１カ月まで）';
 const KIKAN_CHK_2M_OVER_ERR = '指定可能な範囲を超過しています。（最長２カ月まで）';
 const KIKAN_FUSEI_ERR = '期間指定が不正です。';
+const KIKAN_FUTURE_ERR = '指定した期間に未来日が含まれています。';
