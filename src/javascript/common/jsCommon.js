@@ -85,3 +85,38 @@ function requireChk(target, message) {
 	}
 	return chkErr;
 }
+
+/**
+ * SQLのSELECT句作成
+ * @param {*} array 連想配列
+ * @returns 「select 'XX','YY' union all select 'ZZ','AA'」の形式に編集したSQLクエリ
+ */
+function sqlDualQuery(array) {
+	const space = ' ';
+	let v;
+	for (let i = 0; i < array.length; i++) {
+		if (i == 0) {
+			v = 'select' + space;
+		} else {
+			v += 'union all' + space + 'select';
+		}
+		let keyList = Object.keys(array[i]);
+		let query = '';
+		let j = 0;
+		for (let key in keyList) {
+			if (keyList[key] == 'shoriDate') {
+				// shoriDateの場合はINSERT出来るようにキャストしておく
+				// cast('2023-04-19 09:00:00'as timestamp without time zone)
+				query += `cast('${array[i][keyList[key]]}' as timestamp without time zone)`;
+			} else {
+				query += `'${array[i][keyList[key]]}'`;
+			}
+			if (j < keyList.length - 1) {
+				query += ',';
+			}
+			j++;
+		}
+		v += query;
+	}
+	return v;
+}

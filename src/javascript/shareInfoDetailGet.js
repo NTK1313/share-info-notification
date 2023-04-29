@@ -41,9 +41,9 @@ async function getShareInfo() {
 	}
 
 	// 未来日チェック
-	let today = editDate();
-	const sysToday = new Date(today.substring(0, 4), today.substring(5, 7) - 1, today.substring(8, 10));
-	if (!compareDate(sysToday, sysEndDate, 'F')) {
+	let tomorrow = editDate({ date: 1 });
+	const sysTomorrow = new Date(tomorrow.substring(0, 4), tomorrow.substring(5, 7) - 1, tomorrow.substring(8, 10));
+	if (!compareDate(sysTomorrow, sysEndDate, 'F')) {
 		alert(KIKAN_FUTURE_ERR);
 		return;
 	}
@@ -90,9 +90,11 @@ async function getShareInfo() {
 		return;
 	});
 	const resultGetShareInfo = await execGetShareInfo.json();
-
+	// 連想配列からSELECT句作成
+	const sqlPrm = sqlDualQuery(resultGetShareInfo);
+	const body2 = [{'Query':sqlPrm}];
 	// ワーク登録
-	await fetch(INS_DB_DATA + '?' + SQL_NM + '=' + 'INS005_WK_STOCK', setApiDetail([METHOD_POST, APPLICATION_JSON, resultGetShareInfo]));
+	await fetch(INS_DB_DATA + '?' + SQL_NM + '=' + 'INS005_WK_STOCK' + '&'+ REPLACE_SQL_QUERY + '=' + 'true', setApiDetail([METHOD_POST, APPLICATION_JSON, body2]));
 
 	// トラン登録
 	const sqlNm = enjp == JP ? 'SEI001_T_STOCK_JP' : 'SEI002_T_STOCK_EN';
@@ -103,6 +105,7 @@ async function getShareInfo() {
 		return;
 	});
 	// ワークテーブル削除
+	// TODO:ワークが初期化されない、トランに登録されない時がたまにあるので原因調査する。
 	await fetch(GET_DB_DATA + '?' + SQL_NM + '=' + 'DEL001_WK_STOCK').catch(error => {
 		console.error(NETWORK_ERR, error);
 		// hc.remove('latest');

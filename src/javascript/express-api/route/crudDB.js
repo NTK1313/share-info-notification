@@ -5,6 +5,7 @@ const f = require('./execSql.js');
 
 // 定数一覧
 const sqlNm = 'sqlNm';
+const replaceSqlQuery = 'replaceSqlQuery';
 
 // TODO:/getPriceの処理のように非同期させればDB接続を共通化出来そう。
 
@@ -97,20 +98,25 @@ router.post('/checkDBData', function (req1, res1) {
 router.post('/insertDBData', function (req1, res1) {
 	const client = new connectDB();
 	const reqstr = JSON.parse(JSON.stringify(req1.body));
-	const sql = f.sqlReader(req1.query[sqlNm] + '.sql');
+	let sql = f.sqlReader(req1.query[sqlNm] + '.sql');
+
+	// 実行SQLの置換を行うかどうか
+	console.log(req1.query[replaceSqlQuery]);
+	const replaceFlg = req1.query[replaceSqlQuery] ? true : false;
 
 	// ループして１件ずつINSERTする
 	for (let i = 0; i < reqstr.length; i++) {
 		let v = [];
 		let keyList = Object.keys(reqstr[i]);
+		let query = '';
 		for (let key in keyList) {
-			v.push(reqstr[i][keyList[key]]);
+			if (replaceFlg) {
+				sql = sql.replace('$1', reqstr[i][keyList[key]]);
+			} else {
+				v.push(reqstr[i][keyList[key]]);
+			}
 		}
-		let query = {
-			text: sql,
-			values: v,
-		}
-
+		query = replaceFlg ? { text: sql } : { text: sql, values: v };
 		client.query(query, (err, res) => {
 			// クエリ実行後の処理
 			if (err) {

@@ -3,6 +3,7 @@ const CLICK = 'click';
 const LOAD = 'load';
 const SQL_NM = 'sqlNm';
 const EXEC_API = 'execApi';
+const REPLACE_SQL_QUERY = 'replaceSqlQuery';
 
 // 株式関連
 const JP = 'JP';
