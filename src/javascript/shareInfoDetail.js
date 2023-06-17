@@ -32,8 +32,8 @@ async function getShareInfo() {
 
 	// 【】内のブランドコードのみを抽出して後続処理を実行
 	let brCd = document.querySelector('#brCd').value;
-	const regexp2 = new RegExp('(?<=【).*?(?=】)');
-	brCd = brCd.match(regexp2)[0];
+	const regexp = new RegExp('(?<=【).*?(?=】)');
+	brCd = brCd.match(regexp)[0];
 
 
 	if (ymdStart.length == 0) {

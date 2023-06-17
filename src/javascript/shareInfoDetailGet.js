@@ -1,31 +1,41 @@
-// TODO一覧
-// 必須チェック、エラーチェック
-// 銘柄登録チェック
-// 過去データ取得
-// トラン登録可否チェック（既に登録済みのものはスキップして登録できるように）
-// トラン登録
+/**
+ * 株式ごとの銘柄情報取得
+ */
+document.querySelector("select[name='enjp']").onchange = async function () {
+	const sqlNm1 = enjp.value == JP ? 'SEL011_M_STOCK_JP' : 'SEL012_M_STOCK_EN';
+	// DBアクセス
+	const execGetDb = await fetch(GET_DB_DATA + '?' + SQL_NM + '=' + sqlNm1).catch(error => {
+		console.error(NETWORK_ERR, error);
+		hc.remove('latest');
+		alert(NETWORK_ERR);
+		return;
+	});
+	const resultGetDb = await execGetDb.json();
+	const brCd = document.querySelector('#brCd');
+	brCd.options.length = 0;
+	for (let i = 0; i < resultGetDb.length; i++) {
+		let op = document.createElement('option');
+		value = resultGetDb[i];
+		op.value = value['br'];
+		op.innerText = value['br'];
+		brCd.appendChild(op);
+	}
+}
 
 /**
  * DB検索
  */
 async function getShareInfo() {
 	const enjp = document.querySelector('#enjp').value;
-	const brCd = document.querySelector('#brCd').value;
 	let ymdStart = document.querySelector('.ymdStart').value;
 	let ymdEnd = document.querySelector('.ymdEnd').value;
-	const regexp = new RegExp('[0-9]{4}');
+
+	// 【】内のブランドコードのみを抽出して後続処理を実行
+	let brCd = document.querySelector('#brCd').value;
+	const regexp = new RegExp('(?<=【).*?(?=】)');
+	brCd = brCd.match(regexp)[0];
 
 	// 入力値チェック
-	if (requireChk(brCd, REQUIRE_BR_CD)) {
-		return;
-	}
-	if (requireChk(enjp, REQUIRE_SHARE_KBN)) {
-		return;
-	}
-	if (!regexp.test(brCd) && enjp == JP) {
-		alert(KETA_CHK_BR_CD);
-		return;
-	}
 	if (requireChk(ymdStart, REQUIRE_KIKAN)) {
 		return;
 	} else if (requireChk(ymdEnd, REQUIRE_KIKAN)) {
@@ -92,9 +102,9 @@ async function getShareInfo() {
 	const resultGetShareInfo = await execGetShareInfo.json();
 	// 連想配列からSELECT句作成
 	const sqlPrm = sqlDualQuery(resultGetShareInfo);
-	const body2 = [{'Query':sqlPrm}];
+	const body2 = [{ 'Query': sqlPrm }];
 	// ワーク登録
-	await fetch(INS_DB_DATA + '?' + SQL_NM + '=' + 'INS005_WK_STOCK' + '&'+ REPLACE_SQL_QUERY + '=' + 'true', setApiDetail([METHOD_POST, APPLICATION_JSON, body2]));
+	await fetch(INS_DB_DATA + '?' + SQL_NM + '=' + 'INS005_WK_STOCK' + '&' + REPLACE_SQL_QUERY + '=' + 'true', setApiDetail([METHOD_POST, APPLICATION_JSON, body2]));
 
 	// トラン登録
 	const sqlNm = enjp == JP ? 'SEI001_T_STOCK_JP' : 'SEI002_T_STOCK_EN';
